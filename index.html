@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="생화학 중간고사 1–7주차 기출 변형·신작 문제 풀이">
+<title>먼작기 생화학 N제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&family=Gothic+A1:wght@800;900&display=swap">
+<style>
+/* Layout: single narrow column, one question card at a time, sticky progress strip on top */
+:root{
+  --bg:#eef2f3; --surface:#ffffff; --ink:#14232b; --muted:#5d6f78; --line:#d3dde1;
+  --accent:#0f6e74; --accent-soft:#d8ecec; --good:#1f7a43; --good-soft:#dcf0e2;
+  --bad:#b4372d; --bad-soft:#f7e0dc; --flag:#a8650b; --flag-soft:#f6e8d0;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#172226; --ink:#e3ecee; --muted:#93a6ad; --line:#2a3a40;
+  --accent:#5cc3c3; --accent-soft:#18383a; --good:#6fd394; --good-soft:#173a26;
+  --bad:#f08a7e; --bad-soft:#3d1f1b; --flag:#e8b25a; --flag-soft:#3a2c14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#172226; --ink:#e3ecee; --muted:#93a6ad; --line:#2a3a40;
+  --accent:#5cc3c3; --accent-soft:#18383a; --good:#6fd394; --good-soft:#173a26;
+  --bad:#f08a7e; --bad-soft:#3d1f1b; --flag:#e8b25a; --flag-soft:#3a2c14; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.brand{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-family:var(--f-display);font-weight:900;font-size:2rem;letter-spacing:-.02em;line-height:1}
+.logo span{color:var(--accent)}
+.sub{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;color:var(--muted);font-weight:700}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.wk{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left;background:transparent;display:flex;flex-direction:column;gap:4px;min-width:0}
+.wk[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.wk .t{font-weight:700;font-size:.95rem}
+.wk .d{font-size:.8rem;color:var(--muted);line-height:1.35}
+.bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .g{background:var(--good)}.bar .b{background:var(--bad)}
+.wk .meta{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;background:transparent;font-size:.9rem}
+.seg[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.seg:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:var(--accent);color:var(--surface);border:0;border-radius:10px;padding:12px 20px;font-weight:700;font-size:1rem}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:10px 16px;font-size:.9rem}
+.note{font-size:.82rem;color:var(--muted)}
+
+/* quiz */
+.strip{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:flex;flex-direction:column;gap:6px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.strip .top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.85rem}
+.dots{display:flex;gap:3px}
+.dots i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.dots i.ok{background:var(--good)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--accent)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:.75rem;padding:2px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.tag.src{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:500}
+.stem{font-size:1.08rem;font-weight:500;white-space:pre-line;text-wrap:pretty}
+.choices{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+.choice{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;width:100%;text-align:left;
+  background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;line-height:1.5}
+.choice:hover:not(:disabled){border-color:var(--accent)}
+.choice .n{font-family:var(--f-mono);font-size:.85rem;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.choice .mark{font-size:.75rem;font-weight:700;padding-top:2px}
+.choice:disabled{cursor:default}
+.choice.correct{border-color:var(--good);background:var(--good-soft)}
+.choice.correct .n{border-color:var(--good);color:var(--good)}
+.choice.correct .mark{color:var(--good)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice.wrong .n{border-color:var(--bad);color:var(--bad)}
+.choice.wrong .mark{color:var(--bad)}
+.choice.dim{opacity:.55}
+.explain{border-left:3px solid var(--accent);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:6px}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--good)}.verdict.no{color:var(--bad)}
+.ref{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.actions{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.flagbtn[aria-pressed="true"]{border-color:var(--flag);background:var(--flag-soft);color:var(--flag)}
+.kbd{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+
+/* result */
+.score{font-family:var(--f-display);font-weight:900;font-size:3rem;line-height:1;font-variant-numeric:tabular-nums}
+.score small{font-size:1.2rem;color:var(--muted);font-weight:800}
+.wlist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.wlist li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.wlist .q{font-size:.9rem}
+.wlist .a{font-size:.82rem;color:var(--good)}
+@media (prefers-reduced-motion:no-preference){.card-in{animation:in .18s ease-out}@keyframes in{from{transform:translateY(4px);opacity:.6}}}
+
+/* week card check */
+.wk{position:relative;padding-right:50px}
+.wk .chk{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);display:grid;place-items:center;transition:background .15s,border-color .15s}
+.wk .chk svg{width:14px;height:14px;stroke:var(--surface);stroke-width:3;fill:none;opacity:0;transition:opacity .15s}
+.wk[aria-pressed="true"] .chk{background:var(--accent);border-color:var(--accent)}
+.wk[aria-pressed="true"] .chk svg{opacity:1}
+.foot{display:flex;justify-content:center}
+.linkbtn{background:none;border:0;color:var(--muted);font-size:.8rem;text-decoration:underline;text-underline-offset:3px}
+
+/* intro */
+.intro{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;
+  padding:env(safe-area-inset-top,0px) max(20px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(20px,env(safe-area-inset-left,0px));transition:opacity .45s}
+.intro.out{opacity:0;pointer-events:none}
+.intro-in{width:min(560px,100%);display:flex;flex-direction:column;gap:18px;position:relative;min-height:220px;justify-content:center}
+.i-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.78rem;letter-spacing:.06em;font-weight:700}
+.i-tag{color:var(--muted)}
+.i-state{padding:3px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted);transition:all .2s}
+.i-state.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.i-state.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.i-line{margin:0;font-size:clamp(1.25rem,4.6vw,1.75rem);font-weight:500;line-height:1.75;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s;text-wrap:balance}
+.i-line.show{opacity:1;transform:none}
+.i-slot{position:relative;display:inline-block;padding:0 3px;border-radius:5px}
+.i-slot::before{content:"";position:absolute;inset:8% 0;border-radius:5px;background:var(--flag-soft);transform-origin:left;transform:scaleX(0);transition:transform .4s ease-out;z-index:-1}
+.i-slot.scan::before{transform:scaleX(1)}
+.i-slot.done::before{background:var(--accent-soft)}
+.i-word{font-family:var(--f-body);font-weight:700;white-space:nowrap}
+.i-slot.swap .i-word{color:var(--accent)}
+.i-old{position:absolute;left:50%;bottom:88%;transform:translate(-50%,8px);font-size:.55em;color:var(--bad);text-decoration:line-through;white-space:nowrap;opacity:0;transition:opacity .3s,transform .3s}
+.i-slot.swap .i-old{opacity:1;transform:translate(-50%,0)}
+.i-logo{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;transform:scale(.96);transition:opacity .35s,transform .35s;pointer-events:none}
+.i-logo.show{opacity:1;transform:none}
+.i-logo b{font-family:var(--f-display);font-weight:900;font-size:clamp(2.6rem,11vw,4rem);letter-spacing:-.03em;line-height:1}
+.i-logo b span{color:var(--accent)}
+.i-logo small{color:var(--muted);font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+.i-skip{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:transparent;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.85rem;color:var(--muted)}
+</style>
+
+<style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+const WEEKS = {
+  1: { prof: "박석인", title: "DNA · 복제 · 복구 · 종양생화학" },
+  2: { prof: "김현경", title: "RNA · 전사 · 가공 · RNAi" },
+  3: { prof: "김현경", title: "유전자 발현조절 Ⅰ" },
+  4: { prof: "박석인", title: "종양생화학 (영상 강의)" },
+  5: { prof: "박윤규", title: "유전자 발현조절 Ⅱ" },
+  7: { prof: "이남규", title: "아미노산 · 단백질 구조" }
+};
+
+const QUESTIONS = [
+/* ───────── 1주차 박석인 ───────── */
+{ id:"w1-01", w:1, topic:"DNA 복제 효소 (원핵)", src:"2025 Q4 변형",
+  q:"E. coli DNA polymerase에 대한 설명으로 옳지 않은 것은?",
+  c:["Pol III는 Okazaki 절편 합성을 포함한 주된 복제 효소이다.",
+     "Pol I은 5′→3′ exonuclease 활성으로 RNA primer를 제거한다.",
+     "Pol II는 주로 DNA 수선에 관여하며 복제의 주효소가 아니다.",
+     "Pol I은 3′→5′ exonuclease 활성이 없어 교정(proofreading)을 하지 못한다.",
+     "Pol III는 3′→5′ exonuclease 활성을 가진다."],
+  a:3, ex:"Pol I은 5′→3′ exo와 3′→5′ exo를 둘 다 가진다. primer를 지우고(5′→3′) gap을 채우면서 교정도 한다. Pol III가 주효소, Pol II는 수선.", ref:"1주차 p.25 · 클로바노트 31′56″" },
+
+{ id:"w1-02", w:1, topic:"DNA 복제 효소 (진핵)", src:"2025 Q5 변형",
+  q:"진핵세포 DNA polymerase와 그 역할의 연결로 옳지 않은 것은?",
+  c:["Pol α – primase와 복합체를 이루어 프라이머 합성을 시작한다.",
+     "Pol δ – lagging strand를 연장한다.",
+     "Pol ε – leading strand를 연장한다.",
+     "Pol γ – 미토콘드리아 DNA를 복제한다.",
+     "Pol β – leading strand 합성의 주효소이다."],
+  a:4, ex:"Pol β는 수선 전용이다. leading = ε, lagging = δ. 2025 기출에서는 'ε가 lagging 주효소'가 오답 선지였다.", ref:"1주차 p.30–31" },
+
+{ id:"w1-03", w:1, topic:"복제 단백질", src:"2025 Q6 변형",
+  q:"DNA 복제에 관여하는 단백질에 대한 설명으로 옳은 것은?",
+  c:["RNase H는 DNA–DNA 이중가닥에서 한 가닥을 잘라 낸다.",
+     "PCNA는 DNA를 둘러싸는 고리로 polymerase가 떨어지지 않게 해 processivity를 높인다.",
+     "SSB(single-strand binding protein)는 이중나선을 푸는 효소이다.",
+     "FEN1은 인접한 Okazaki 절편을 phosphodiester 결합으로 연결한다.",
+     "Topoisomerase는 RNA primer를 합성한다."],
+  a:1, ex:"RNase H는 RNA–DNA hybrid의 RNA를 분해, SSB는 풀린 가닥이 다시 붙지 않게 잡아둠(푸는 건 helicase), FEN1은 flap 절단(연결은 ligase), primer 합성은 primase.", ref:"1주차 p.23, 28, 32–33" },
+
+{ id:"w1-04", w:1, topic:"말단 복제 · Telomerase", src:"2023 Q23 변형",
+  q:"말단 복제 문제와 telomerase에 대한 설명으로 옳지 않은 것은?",
+  c:["선형 염색체 끝의 마지막 primer 자리를 메우지 못해 복제할 때마다 끝이 짧아진다.",
+     "복제가 끝난 뒤 염색체 끝에는 3′ overhang이 남는다.",
+     "Telomerase는 자기 RNA template을 가지고 다닌다.",
+     "사람 telomere의 반복 서열은 TTAGGG이다.",
+     "원형 염색체를 가진 세균도 telomerase로 염색체 끝을 유지한다."],
+  a:4, ex:"원형 염색체는 끝이 없어서 말단 복제 문제가 없다. telomerase는 3′ overhang에 TTAGGG를 덧붙인다.", ref:"1주차 p.34–35 · 클로바노트 42′13″" },
+
+{ id:"w1-05", w:1, topic:"복제 시간 계산", src:"2023 Q25 변형", fixed:true,
+  q:"1200 kb DNA 조각에 복제 원점 6개가 서로 같은 간격으로 대칭 배치되어 있다(양 끝과의 거리는 원점 간격의 절반). DNA polymerase가 2 kb/초로 움직일 때 복제를 끝내는 데 걸리는 시간은? (끝 문제는 무시)",
+  c:["25초","50초","100초","200초","600초"],
+  a:1, ex:"원점 하나가 맡는 구간 = 1200 ÷ 6 = 200 kb. 복제는 양방향이라 각 fork는 100 kb만 가면 이웃 fork와 만난다. 100 kb ÷ 2 kb/s = 50초. 한 방향으로 계산하면 100초(함정).", ref:"1주차 p.29" },
+
+{ id:"w1-06", w:1, topic:"DSB 복구", src:"2025 Q7 변형",
+  q:"DNA 이중가닥 절단(DSB) 복구에 대한 설명으로 옳지 않은 것은?",
+  c:["NHEJ는 상동 서열 없이 끊긴 끝을 그대로 붙인다.",
+     "NHEJ는 끝 염기가 소실될 수 있어 부정확하다.",
+     "HR은 상동 염색체를 주형으로 사용해 정확하게 복구한다.",
+     "HR 과정에서 strand invasion 후 Holliday 구조가 형성된다.",
+     "전리방사선에 의한 DSB는 주로 mismatch repair(MMR)가 복구한다."],
+  a:4, ex:"DSB는 NHEJ와 HR이 고친다. MMR은 복제 때 잘못 짝지은 염기를 고치는 기전이다. 이름은 Non-Homologous End Joining(3단어), Homologous Recombination(2단어).", ref:"1주차 p.46–51 · 클로바노트 1:02′30″" },
+
+{ id:"w1-07", w:1, topic:"복구 기전 · 질환", src:"신작",
+  q:"DNA 손상 복구에 대한 설명으로 옳지 않은 것은?",
+  c:["Xeroderma pigmentosum은 NER 결함으로 피부암 위험이 크게 증가한다.",
+     "Cockayne syndrome은 전사 연계 복구(TCR) 결함과 관련된다.",
+     "HNPCC(Lynch syndrome)는 MLH1, MSH2 등 MMR 유전자 이상과 관련된다.",
+     "UV에 의한 thymine dimer는 빛과 photoreactivating enzyme으로 직접 되돌릴 수 있다.",
+     "O⁶-methylguanine은 DNA glycosylase가 염기를 잘라 내는 BER로만 복구된다."],
+  a:4, ex:"O⁶-methylguanine은 direct reversal: methyltransferase가 메틸기를 자기 Cys로 옮긴다. 교수님: direct reversal은 종류가 적고 특이해서 시험에 잘 나온다.", ref:"1주차 p.38–45, 55 · 클로바노트 46′41″" },
+
+{ id:"w1-08", w:1, topic:"염기 · nucleoside", src:"2025 Q2 변형",
+  q:"핵산의 구성 단위에 대한 설명으로 옳지 않은 것은?",
+  c:["Adenine과 guanine은 purine으로 이중 고리 구조이다.",
+     "Thymine은 DNA에만, uracil은 RNA에만 존재한다.",
+     "Guanine의 nucleoside 이름은 guanosine이다.",
+     "Cytosine에 deoxyribose가 붙은 nucleoside는 deoxycytidine이다.",
+     "Nucleoside는 염기, 당, 인산 1개가 결합한 구조이다."],
+  a:4, ex:"Nucleoside = 염기 + 당(인산 없음). 인산이 1~3개 붙으면 nucleotide(NMP·NDP·NTP).", ref:"1주차 p.14–16" },
+
+{ id:"w1-09", w:1, topic:"Oncogene vs TSG", src:"2025 Q16 · 2022 서술14 변형",
+  q:"암 관련 유전자의 돌연변이 방식에 대한 설명으로 옳지 않은 것은?",
+  c:["Proto-oncogene은 gain-of-function 돌연변이로 oncogene이 되며 우성으로 작용한다.",
+     "Tumor suppressor gene은 두 allele이 모두 기능을 잃어야 암에 기여한다.",
+     "HER2(erbB-2)는 유전자 증폭으로 단백질이 과다 생산된다.",
+     "BRCA는 CpG island 과메틸화에 의한 후성유전적 침묵으로 꺼질 수 있다.",
+     "RAS의 대표적 활성화 기전은 염색체 결실(LOH)이다."],
+  a:4, ex:"RAS는 점 돌연변이로 항상 켜진 단백질이 된다. 결실(LOH)은 TSG가 꺼지는 방식. 대칭으로 외우기: 점 돌연변이/전좌/증폭 ↔ 점 돌연변이/결실/과메틸화.", ref:"1주차 p.69–71, 80, 82" },
+
+{ id:"w1-10", w:1, topic:"BCR-ABL · CML", src:"2022·2023 서술11 변형",
+  q:"만성 골수성 백혈병(CML)에 대한 설명으로 옳지 않은 것은?",
+  c:["9번과 22번 염색체 사이의 상호 전좌가 원인이다.",
+     "Philadelphia chromosome은 전좌 후 짧아진 9번 염색체이다.",
+     "BCR-ABL 융합 단백질은 tyrosine kinase 활성을 가진다.",
+     "핵형 분석(karyotyping)으로 전좌를 확인해 진단할 수 있다.",
+     "BCR은 잘 끊기는 부위(breakpoint cluster region)라는 뜻이다."],
+  a:1, ex:"Philadelphia chromosome은 짧아진 22번 염색체(der(22))다. 약은 BCR-ABL을 막는 imatinib.", ref:"1주차 p.54, 83–84 · 클로바노트 1:12′53″" },
+
+/* ───────── 2주차 김현경 ───────── */
+{ id:"w2-01", w:2, topic:"lncRNA", src:"2025 Q20 변형",
+  q:"lncRNA에 대한 설명으로 옳지 않은 것은?",
+  c:["200 nt 이상의 긴 비번역 RNA이다.",
+     "대부분 RNA polymerase Ⅱ에 의해 전사된다.",
+     "RNA binding protein과 결합하여 기능한다.",
+     "출제 기준상 주로 핵 안에 머물러 기능한다.",
+     "번역되어 짧은 조절 펩타이드를 만드는 것이 주된 기능이다."],
+  a:4, ex:"lncRNA는 비번역 RNA다. splicing·전사·mRNA 안정성을 조절한다. 공식: 200 nt↑ · Pol Ⅱ · 주로 핵 · RBP 결합.", ref:"2주차 p.13" },
+
+{ id:"w2-02", w:2, topic:"RNA polymerase", src:"2025 Q23 변형",
+  q:"진핵세포 RNA polymerase에 대한 설명으로 옳지 않은 것은?",
+  c:["RNAP Ⅰ은 nucleolus에서 18S·5.8S·28S rRNA를 만든다.",
+     "RNAP Ⅱ는 mRNA, miRNA, snRNA를 만든다.",
+     "RNAP Ⅲ는 tRNA와 5S rRNA를 만든다.",
+     "α-amanitin에 가장 민감한 것은 RNAP Ⅱ이다.",
+     "RNAP Ⅲ는 α-amanitin의 영향을 전혀 받지 않는다."],
+  a:4, ex:"α-amanitin: Ⅰ 영향 없음 / Ⅱ 강하게 억제 / Ⅲ 높은 농도에서 억제. 영향이 '전혀 없는' 것은 RNAP Ⅰ.", ref:"2주차 p.22–26" },
+
+{ id:"w2-03", w:2, topic:"mRNA 가공", src:"2025 Q22 변형",
+  q:"진핵 mRNA 가공에 대한 설명으로 옳지 않은 것은?",
+  c:["5′ cap은 7-methylguanosine이 5′–5′ triphosphate로 연결된 구조이다.",
+     "Polyadenylation 신호서열(AAUAAA)은 3′ UTR에 있다.",
+     "Poly(A) polymerase는 DNA 주형의 T 서열을 읽어 A를 첨가한다.",
+     "가공 효소들은 RNAP Ⅱ의 CTD에 모여 전사 중에 가공이 일어난다.",
+     "5′ cap은 mRNA 분해를 억제하고 번역 개시 때 리보솜이 인지한다."],
+  a:2, ex:"Poly(A) polymerase는 주형 없이 A를 100–250개 붙인다. CPSF가 AAUAAA를 인지 → 10–20 nt 아래 절단 → poly(A) 첨가.", ref:"2주차 p.41–43" },
+
+{ id:"w2-04", w:2, topic:"tRNA 가공 순서", src:"신작", fixed:true,
+  q:"tRNA 가공 과정을 순서대로 옳게 나열한 것은?\n가. RNase P가 5′ leader를 자른다\n나. 3′ trailer를 제거한다\n다. 3′ 끝에 CCA를 첨가한다\n라. 염기를 변형한다",
+  c:["가 → 나 → 다 → 라","나 → 가 → 라 → 다","다 → 가 → 나 → 라","가 → 다 → 나 → 라","라 → 가 → 나 → 다"],
+  a:0, ex:"양쪽을 자르고(5′ leader → 3′ trailer) → CCA 첨가 → A76에 아미노산 → (일부 intron 제거) → 염기 변형. 교수님이 '순서대로 기억하라'고 짚은 부분.", ref:"2주차 p.46 · 클로바노트 52′40″–54′28″" },
+
+{ id:"w2-05", w:2, topic:"원핵 전사", src:"2025 Q21 변형",
+  q:"원핵세포 전사에 대한 설명으로 옳지 않은 것은?",
+  c:["ρ-비의존 종료는 GC가 풍부한 stem-loop와 polyU로 일어난다.",
+     "ρ 인자는 RNA의 C-rich 서열에 결합한다.",
+     "ρ 인자는 ATPase 활성으로 DNA–RNA hybrid를 푼다.",
+     "σ 인자는 promoter를 인식할 뿐 아니라 전사 종결 신호도 인식한다.",
+     "σ 인자는 약 10개의 뉴클레오티드가 결합한 뒤 해리된다."],
+  a:3, ex:"σ는 개시 인자다. promoter 인식 → −10 지역을 풀어 open complex → 약 10 nt 뒤 해리. 종료와는 관계없다.", ref:"2주차 p.29–31" },
+
+{ id:"w2-06", w:2, topic:"Promoter · enhancer", src:"2025 Q26 변형",
+  q:"전사에 영향을 주는 DNA 구조에 대한 설명으로 옳지 않은 것은?",
+  c:["Enhancer는 전사 시작점의 upstream과 downstream 모두에 위치할 수 있다.",
+     "Enhancer는 방향을 뒤집어도 작동한다.",
+     "Enhancer에는 여러 전사인자가 결합할 수 있는 자리가 여러 개 있다.",
+     "TATA box는 전사 시작점의 약 −25 ~ −30 위치에 있다.",
+     "모든 진핵 promoter는 TATA box를 가진다."],
+  a:4, ex:"모든 promoter에 TATA가 있는 것은 아니다(5주차: TATA 약 12.5%, Inr가 약 50%로 가장 흔함). 2025에서는 'enhancer마다 전사인자 하나'가 오답이었다.", ref:"2주차 p.22, 35" },
+
+{ id:"w2-07", w:2, topic:"전사 일반", src:"2025 Q25 변형",
+  q:"전사(RNA 합성)에 대한 설명으로 옳지 않은 것은?",
+  c:["성장하는 RNA의 3′-OH가 새 NTP의 α-인산을 공격해 결합을 만든다.",
+     "원핵세포의 전사단위는 polycistronic하다.",
+     "rRNA와 tRNA는 mRNA보다 수명이 길다.",
+     "세포 내 양은 rRNA > tRNA > mRNA 순이다.",
+     "RNA 합성의 오류율은 DNA 복제보다 낮아 교정이 거의 필요 없다."],
+  a:4, ex:"전사 오류율은 비교적 높다(10⁻⁴–10⁻⁶/nt). 원핵 polycistronic, 진핵 monocistronic.", ref:"2주차 p.19–21" },
+
+{ id:"w2-08", w:2, topic:"miRNA 생성 · 작용", src:"2022 Q10 변형",
+  q:"miRNA에 대한 설명으로 옳지 않은 것은?",
+  c:["핵에서 Drosha가 pri-miRNA를 pre-miRNA로 자른다.",
+     "pre-miRNA는 Exportin5에 의해 세포질로 나간다.",
+     "세포질에서 Dicer가 pre-miRNA를 약 20개 염기의 이중가닥으로 자른다.",
+     "guide strand가 Argonaute를 포함한 RISC에 탑재된다.",
+     "표적 mRNA와 부분적으로 상보적일 때 mRNA를 절단해 분해한다."],
+  a:4, ex:"부분 상보 → 번역 억제 / 완전 상보 → mRNA 절단. 생성 순서 Drosha(핵) → Exportin5 → Dicer(세포질) → RISC.", ref:"2주차 p.59" },
+
+{ id:"w2-09", w:2, topic:"mRNA 백신", src:"2025 Q33 변형",
+  q:"mRNA 백신에 대한 설명으로 옳지 않은 것은?",
+  c:["항원 서열만 알면 빠르게 설계할 수 있다.",
+     "세포 없이(cell-free) 생산할 수 있다.",
+     "변형 nucleoside를 써서 선천면역 반응을 강화해 효능을 높인다.",
+     "음전하를 띤 mRNA를 LNP로 감싸 세포 안으로 전달한다.",
+     "mRNA와 LNP의 안정성이 낮아 냉장·냉동 유통이 필요하다."],
+  a:2, ex:"변형 nucleoside(m5C 등)는 과도한 선천면역을 '줄여' 단백질 발현을 늘린다. 성공 조건: 자연 mRNA처럼 + 과한 선천면역 X.", ref:"2주차 p.64–67" },
+
+{ id:"w2-10", w:2, topic:"RNAi · RNA 변형", src:"신작",
+  q:"RNA 간섭(RNAi)과 RNA 변형에 대한 설명으로 옳지 않은 것은?",
+  c:["RNAi는 짧은 이중가닥 RNA에 의해 유전자 발현이 억제되는 현상이다.",
+     "예쁜꼬마선충에 sense와 antisense를 합친 dsRNA를 넣자 표적 단백질이 감소했다.",
+     "Patisiran은 transthyretin mRNA를 분해하는 siRNA 약이다.",
+     "RNA는 크기가 작아 세포막을 쉽게 통과하므로 전달체 없이 투여한다.",
+     "m6A의 eraser로 FTO와 ALKBH5가 있다."],
+  a:3, ex:"RNA는 크고 음전하라 세포막을 못 지나가고, 혈중 RNase에 분해된다 → LNP로 감싼다.", ref:"2주차 p.54, 56–61" },
+
+/* ───────── 3주차 김현경 ───────── */
+{ id:"w3-01", w:3, topic:"Lac operon", src:"2025 Q32 변형",
+  q:"Glucose가 높고 lactose가 있는 조건에서 lac operon의 상태로 옳은 것은?",
+  c:["Repressor가 operator에 결합하고 cAMP는 높다.",
+     "Repressor는 떨어지지만 CAP-cAMP 결합이 거의 없어 발현이 매우 낮다.",
+     "Repressor가 떨어지고 CAP-cAMP가 결합해 강하게 발현된다.",
+     "Repressor와 CAP-cAMP가 모두 결합해 발현이 없다.",
+     "Allolactose가 CAP에 결합해 발현을 억제한다."],
+  a:1, ex:"Lactose → allolactose가 repressor를 떼어냄. 하지만 glucose가 높으면 cAMP↓ → CAP-cAMP가 없어 RNA pol을 끌어오지 못함 = catabolite repression. 강한 발현은 low glucose + lactose뿐.", ref:"3주차 p.20–21 · 클로바노트 15′32″" },
+
+{ id:"w3-02", w:3, topic:"Trp attenuation", src:"2025 Q28 변형",
+  q:"Trp operon의 조절에 대한 설명으로 옳지 않은 것은?",
+  c:["Trp는 corepressor로 작용한다.",
+     "Trp가 적으면 리보솜이 leader 1번 영역의 Trp codon에서 멈춘다.",
+     "Trp가 적으면 2–3번 영역이 짝지어 전사가 계속된다.",
+     "Trp가 많으면 3–4번 영역이 종결 구조를 만든다.",
+     "Trp가 많으면 리보솜이 1번 영역에서 멈춰 3–4 구조가 생긴다."],
+  a:4, ex:"Trp 많음 = leader peptide 완전 번역(멈추지 않음) + 2번을 덮음 → 3–4 종결. Trp 적음 = 1번에서 stall → 2–3 → 전사 계속.", ref:"3주차 p.19, 22–23" },
+
+{ id:"w3-03", w:3, topic:"Attenuation 원리", src:"신작",
+  q:"Attenuation이 원핵세포에서만 가능한 가장 직접적인 이유는?",
+  c:["전사와 번역이 동시에 일어난다(coupled transcription–translation).",
+     "RNA polymerase가 한 종류뿐이다.",
+     "Histone이 없다.",
+     "원형 염색체를 가진다.",
+     "mRNA 반감기가 짧다."],
+  a:0, ex:"리보솜이 leader peptide를 번역하는 상태가 바로 뒤의 RNA 2차 구조를 바꿔 전사 종결 여부를 정한다. 전사와 번역이 동시에 일어나야 가능하다.", ref:"3주차 p.13, 22" },
+
+{ id:"w3-04", w:3, topic:"원핵 발현조절 특징", src:"2025 Q27 변형",
+  q:"원핵세포(E. coli)의 유전자 발현에 대한 설명으로 옳지 않은 것은?",
+  c:["원형 염색체 1개를 가진다.",
+     "Histone이 없다.",
+     "전사가 끝나기 전에 번역이 시작된다.",
+     "mRNA가 polycistronic하다.",
+     "mRNA 반감기가 길어 한 번 전사하면 오랫동안 단백질을 만든다."],
+  a:4, ex:"원핵 mRNA는 몇 분 안에 분해된다 → 단백질을 계속 만들려면 전사가 계속 필요. 2022(지속 생산)·2025(반감기 길다) 모두 이 지점을 비틀었다.", ref:"3주차 p.12–14" },
+
+{ id:"w3-05", w:3, topic:"Operon", src:"2022 Q13 변형",
+  q:"Operon에 대한 설명으로 옳은 것은?",
+  c:["Promoter 하나에 여러 structural gene이 붙어 함께 조절된다.",
+     "Operon의 각 유전자는 자기 promoter를 따로 가진다.",
+     "하나의 mRNA로 전사되어 하나의 단백질로 번역된다.",
+     "진핵생물에서도 흔히 볼 수 있는 조절 기전이다.",
+     "Repressor는 promoter에 직접 결합해 RNA polymerase를 떼어낸다."],
+  a:0, ex:"하나의 polycistronic mRNA → 유전자마다 start·stop codon이 있어 여러 단백질. 세균에만 있다. Repressor는 operator에 붙는다.", ref:"3주차 p.15–16" },
+
+{ id:"w3-06", w:3, topic:"DNase I 과민성", src:"2025 Q30 변형",
+  q:"분리한 핵에 DNase I을 처리했더니 특정 유전자 주변이 과민성(hypersensitivity)을 보였다. 이 부위에서 관찰될 가능성이 가장 높은 것은?",
+  c:["H3K9me3 증가","Promoter CpG 메틸화 증가","히스톤 아세틸화 증가","H3K27me3 증가","HP1 결합 증가"],
+  a:2, ex:"DNase I 과민성 = 열린 염색질 = 전사 활성. 활성 쪽 표지(아세틸화↑, H3K4me3↑)를 고른다. 나머지는 모두 억제 표지.", ref:"3주차 p.29, 43, 47–49" },
+
+{ id:"w3-07", w:3, topic:"히스톤 메틸화 짝", src:"2025 Q31 변형",
+  q:"히스톤 변형과 관련 단백질·의미의 연결로 옳지 않은 것은?",
+  c:["H3K4me3 – 활성 promoter, 전사 시작점 주변",
+     "H3K9me3 – HP1이 chromodomain으로 인식",
+     "H3K27me3 – PRC2(EZH2)가 형성",
+     "Bivalent domain – H3K4me3와 H3K27me3가 같은 promoter에 공존",
+     "H3K9me3 – PRC2가 형성하며 facultative heterochromatin의 표지"],
+  a:4, ex:"K9 ↔ HP1 (constitutive heterochromatin) / K27 ↔ PRC2·EZH2 (facultative) / K4 ↔ 활성. 숫자와 짝을 바꾼 선지가 단골.", ref:"3주차 p.47–51" },
+
+{ id:"w3-08", w:3, topic:"DNA 메틸화", src:"신작",
+  q:"DNA 메틸화에 대한 설명으로 옳지 않은 것은?",
+  c:["CpG의 cytosine 5번 탄소에 메틸기가 붙는다.",
+     "DNMT3A/3B는 de novo 메틸화를 담당한다.",
+     "DNMT1은 UHRF1과 함께 복제 후 유지 메틸화를 담당한다.",
+     "TET는 능동적 탈메틸화에 관여한다.",
+     "DNA 메틸화는 한번 생기면 되돌릴 수 없는 영구적 변화이다."],
+  a:4, ex:"TET(능동) 또는 복제에 따른 희석(수동)으로 탈메틸화된다 → 가역적이라 DNMT 억제제 같은 약이 된다.", ref:"3주차 p.36–37, 61" },
+
+{ id:"w3-09", w:3, topic:"iPS", src:"2022 주관식1 변형",
+  q:"iPS 세포에 대한 설명으로 옳은 것은?",
+  c:["Oct3/4, Sox2, Klf4, c-Myc 네 전사인자를 넣어 섬유모세포를 만능줄기세포로 만들었다.",
+     "Oct3/4, Sox2, Nanog, p53 네 전사인자를 넣어 만들었다.",
+     "Gurdon이 처음 사람 iPS 세포를 만들었다.",
+     "분화된 세포에는 일부 유전정보만 남아 있어 iPS 전환이 가능하다.",
+     "환자 자신의 세포로 만들기 때문에 질병 모델로는 쓸 수 없다."],
+  a:0, ex:"Yamanaka: 2006 쥐, 2007 사람, 2012 노벨상. Gurdon은 개구리 핵 이식. 활용 = 세포 치료 + 질병 모델·신약 개발.", ref:"3주차 p.6–11" },
+
+{ id:"w3-10", w:3, topic:"Repressor 조절", src:"2022 주관식2 변형",
+  q:"Operon의 repressor 조절에 대한 설명으로 옳은 것은?",
+  c:["Lac operon에서 allolactose는 repressor에 결합해 operator에서 떼어낸다.",
+     "Lac operon의 진짜 inducer는 lactose 자체이다.",
+     "Trp operon에서 트립토판은 repressor를 operator에서 떼어낸다.",
+     "CAP-cAMP는 glucose가 높을 때 증가한다.",
+     "Trp repressor는 corepressor 없이도 operator에 강하게 결합한다."],
+  a:0, ex:"Induction: inducer(allolactose, LacZ가 만듦)가 repressor를 떼어냄. Repression: corepressor(트립토판)가 붙어야 repressor가 operator에 결합. glucose↓ → cAMP↑.", ref:"3주차 p.17–20" },
+
+/* ───────── 4주차 박석인 (영상) ───────── */
+{ id:"w4-01", w:4, topic:"Hallmarks", src:"2025 Q11 변형",
+  q:"다음 중 2011년 'Hallmarks of Cancer: the Next Generation'에서 새로 추가된 것이 아닌 것은?",
+  c:["Avoiding immune destruction","Deregulating cellular energetics","Tumor-promoting inflammation","Resisting cell death","Genome instability and mutation"],
+  a:3, ex:"추가 4개 = emerging(energetics, immune destruction) + enabling(genome instability, inflammation). Resisting cell death는 2000년 원래 6개.", ref:"4주차 p.9–10" },
+
+{ id:"w4-02", w:4, topic:"다단계 발암", src:"2025 Q13 변형",
+  q:"암 발생에 대한 설명으로 옳지 않은 것은?",
+  c:["암은 돌연변이가 누적되어 생기는 유전자 질환(genetic disease)이다.",
+     "대장암은 APC → RAS → p53 등의 변이가 차례로 쌓이며 진행한다.",
+     "대장암의 다단계 발암에서 가장 먼저 생기는 변이는 p53이다.",
+     "유전체 불안정성은 변이가 쌓이는 속도를 높인다.",
+     "한 종양 조직 안에 여러 단계의 세포가 섞여 있는 것을 종양 이질성이라 한다."],
+  a:2, ex:"APC가 먼저, p53은 뒤. 'Genetic(유전자의) ≠ Hereditary(유전되는)'도 같이 기억.", ref:"4주차 p.5–8 · 영상 02′25″–03′24″" },
+
+{ id:"w4-03", w:4, topic:"Oncogene 표 (Table 18.1)", src:"신작",
+  q:"Oncogene과 분류·활성화 기전의 연결로 옳지 않은 것은?",
+  c:["erb-b2(HER2) – 성장인자 수용체 – 유전자 증폭",
+     "ras – G 단백질 – 점 돌연변이",
+     "abl – tyrosine kinase – 염색체 전좌",
+     "src – tyrosine kinase – 과발현",
+     "myc – G 단백질 – 점 돌연변이"],
+  a:4, ex:"myc은 전사인자다(cyclin D·CDK4는 세포주기). 표에서 ras만 G 단백질.", ref:"4주차 p.16–17" },
+
+{ id:"w4-04", w:4, topic:"항체 이름", src:"신작",
+  q:"Trastuzumab의 어미 '-zumab'이 뜻하는 항체 종류는?",
+  c:["생쥐 항체","키메라 항체","인간화 항체","완전 인간 항체","저분자 kinase 억제제"],
+  a:2, ex:"-omab 쥐 · -ximab 키메라 · -zumab 인간화(>90%) · -umab 완전 인간. (-tinib은 저분자 억제제, 예: imatinib)", ref:"4주차 p.21 · 영상 09′51″" },
+
+{ id:"w4-05", w:4, topic:"종양 바이러스", src:"신작",
+  q:"DNA 종양 바이러스에 대한 설명으로 옳은 것은?",
+  c:["HPV의 E6는 p53을 분해한다.",
+     "HPV의 E7은 p53을 분해한다.",
+     "HPV의 E6는 pRB와 E2F의 결합을 강화한다.",
+     "SV40 large T antigen은 RAS를 활성화한다.",
+     "EBV는 자궁경부암의 주된 원인이다."],
+  a:0, ex:"E6 → p53 분해, E7 → pRB–E2F 결합 방해. SV40 large T → p53·pRB 불활성. EBV → Burkitt 림프종, HPV → 자궁경부암.", ref:"4주차 p.13, 28" },
+
+{ id:"w4-06", w:4, topic:"Cancer Genes 표", src:"2025 Q16 변형",
+  q:"교수님이 '가장 중요한 표'라고 한 Cancer Genes 표에서 caretaker 유전자에 대한 설명으로 옳은 것은?",
+  c:["DNA 손상을 수선·예방하며, 기능을 잃으면 돌연변이가 쌓이고 유전적으로 열성이다.",
+     "세포 생존·증식을 촉진하며 gain-of-function으로 작용한다.",
+     "주로 염색체 전좌와 유전자 증폭으로 활성화된다.",
+     "한 allele만 바뀌어도 암이 되는 우성 유전자이다.",
+     "대표적인 예는 RAS와 MYC이다."],
+  a:0, ex:"Proto-oncogene: gain·우성·증식 촉진 / TSG·caretaker: loss·열성. Caretaker 예: BRCA, MLH1·MSH2.", ref:"4주차 p.29 · 영상 11′13″, 12′39″" },
+
+{ id:"w4-07", w:4, topic:"Rb · two-hit", src:"신작",
+  q:"망막모세포종(retinoblastoma)과 RB 유전자에 대한 설명으로 옳지 않은 것은?",
+  c:["두 allele이 모두 망가져야 암이 된다.",
+     "가족성은 한 allele의 결함을 물려받고 태어난다.",
+     "가족성은 양측성으로 나타나는 경우가 많다.",
+     "산발성은 한 세포에서 두 번의 체세포 돌연변이가 일어나야 한다.",
+     "RB는 tumor suppressor gene이므로 한 allele만 변이되어도 우성으로 발현된다."],
+  a:4, ex:"TSG는 열성: 한 짝만 멀쩡해도 암이 안 생긴다(second hit, LOH 필요).", ref:"4주차 p.22–24 · 영상 10′44″–11′13″" },
+
+{ id:"w4-08", w:4, topic:"HER2", src:"2025 Q14 변형",
+  q:"HER2 양성 유방암에 대한 설명으로 옳지 않은 것은?",
+  c:["HER2는 EGF 수용체 계열 단백질이다.",
+     "IHC와 FISH로 HER2 양성 여부를 판정한다.",
+     "HER2 양성 유방암은 음성보다 예후가 좋다.",
+     "Trastuzumab과 pertuzumab이 표적 항체로 쓰인다.",
+     "T-DM1은 항체에 항암제를 결합한 약이다."],
+  a:2, ex:"HER2 양성은 예후가 나쁘다. 그래서 분자 진단으로 나누고 표적 치료를 한다.", ref:"4주차 p.19–20 · 영상 08′55″–09′23″" },
+
+{ id:"w4-09", w:4, topic:"합성치사", src:"2025 Q19 변형",
+  q:"합성치사(synthetic lethality)와 PARP 억제제에 대한 설명으로 옳지 않은 것은?",
+  c:["두 유전자 중 하나만 기능을 잃으면 세포가 살지만, 둘 다 잃으면 죽는다.",
+     "BRCA는 상동재조합 수선(HRR), PARP1은 염기절제수선(BER)에 관여한다.",
+     "BRCA 결손 암세포에 PARP 억제제를 주면 암세포가 선택적으로 죽는다.",
+     "PARP 억제제는 BRCA가 정상인 암세포에서 가장 효과가 크다.",
+     "정상세포는 PARP를 억제해도 BRCA 경로로 수선해 살아남는다."],
+  a:3, ex:"PARP 억제제는 BRCA 변이가 있을 때만 듣는다. BRCA 정상 세포는 HRR로 버틴다.", ref:"4주차 p.34 · 영상 14′25″–14′52″" },
+
+{ id:"w4-10", w:4, topic:"유전성 암 · Src", src:"2025 Q18 변형",
+  q:"다음 설명 중 옳지 않은 것은?",
+  c:["BRCA1/2 변이는 유전성 유방암·난소암과 관련된다.",
+     "유전성 비폴립성 대장암은 MLH1, MSH2 등 MMR 유전자 이상과 관련된다.",
+     "BRCA, MSH, MLH는 모두 DNA 수선 유전자이다.",
+     "Rous sarcoma virus의 v-Src에 대응하는 사람의 정상 유전자는 c-SRC이다.",
+     "BRCA는 gain-of-function 돌연변이로 암을 일으키는 oncogene이다."],
+  a:4, ex:"BRCA는 TSG(caretaker)로 loss-of-function. 2025에는 'BRCA는 직접, MSH·MLH는 간접'이 오답이었다.", ref:"4주차 p.12, 26, 33" },
+
+/* ───────── 5주차 박윤규 ───────── */
+{ id:"w5-01", w:5, topic:"철 조절", src:"2022 Q9 · 2023 Q17 변형",
+  q:"세포 내 철이 충분할 때 일어나는 일로 옳은 것은?",
+  c:["철이 없는 IRE-BP가 IRE에 결합한다.",
+     "Ferritin mRNA의 번역이 늘고, transferrin receptor mRNA의 분해가 늘어난다.",
+     "Ferritin mRNA의 번역이 억제된다.",
+     "Transferrin receptor mRNA가 안정화되어 수용체가 늘어난다.",
+     "Ferritin은 전사 단계에서 조절된다."],
+  a:1, ex:"철 충분 → IRE-BP가 IRE에서 떨어짐 → ferritin(IRE 5′) 번역↑ / TfR(IRE 3′) 보호 해제 → 분해↑. 철 부족이면 정반대. ferritin = 번역 조절, TfR = mRNA 안정성(전사 후).", ref:"5주차 p.43–46 · 2부 01:01′39″–01:10′03″" },
+
+{ id:"w5-02", w:5, topic:"Glucocorticoid receptor", src:"2025 Q37 변형",
+  q:"Glucocorticoid receptor(GR)에 대한 설명으로 옳지 않은 것은?",
+  c:["리간드가 없으면 세포질에서 Hsp90과 결합해 있다.",
+     "리간드가 결합하면 Hsp90이 떨어지고 핵으로 이동한다.",
+     "Homodimer를 형성한다.",
+     "DNA의 HRE(hormone response element)에 결합한다.",
+     "RXR과 heterodimer를 이루어 항상 핵 안에 존재한다."],
+  a:4, ex:"RXR과 heterodimer로 항상 핵 안에 있는 것은 RAR·T3R·VDR. GR은 세포질 → 핵, homodimer.", ref:"5주차 p.14–18, 26 · 1부 45′37″" },
+
+{ id:"w5-03", w:5, topic:"DNA 결합 motif", src:"2023 Q18 변형",
+  q:"단량체(monomer)로 DNA에 결합하는 motif는?",
+  c:["C2H2 zinc finger","Leucine zipper","Helix-loop-helix","C4 zinc finger","bZIP"],
+  a:0, ex:"C2H2 zinc finger = 단량체, 사람에서 가장 흔한 DNA 결합 motif. Dimer: leucine zipper(bZIP)·HLH·C4 zinc finger(핵수용체). Quiz-2: dimerization 기능 motif = leucine zipper.", ref:"5주차 p.20–24, 30 · 2부 19′07″" },
+
+{ id:"w5-04", w:5, topic:"ApoB RNA editing", src:"2025 Q38 변형",
+  q:"ApoB와 RNA editing에 대한 설명으로 옳지 않은 것은?",
+  c:["소장에서 cytidine deaminase가 CAA(Gln)의 C를 U로 바꿔 UAA 종결코돈을 만든다.",
+     "소장에서는 짧은 ApoB-48이 만들어져 chylomicron에 쓰인다.",
+     "간에서는 편집 없이 ApoB-100이 만들어져 VLDL에 쓰인다.",
+     "RNA editing은 전사 후 mRNA 서열을 바꾸는 것이다.",
+     "RNA editing은 사람 단백질 다양성에 가장 크게 기여하는 기전이다."],
+  a:4, ex:"가장 크게 기여하는 것은 alternative splicing(Quiz-5). editing은 사람에서 예외적인 기전.", ref:"5주차 p.35–38 · 2부 32′03″, 38′56″" },
+
+{ id:"w5-05", w:5, topic:"miRNA 작용", src:"2025 Q36 변형",
+  q:"miRNA/siRNA에 대한 설명으로 옳은 것은?",
+  c:["표적 mRNA와 부분적으로 상보적이면 mRNA를 절단한다.",
+     "완전히 상보적이면 Argonaute가 11–12번째 사이를 잘라 mRNA를 분해한다.",
+     "Dicer는 핵에서, Drosha는 세포질에서 작용한다.",
+     "passenger strand가 RISC에 실리고 guide strand는 분해된다.",
+     "하나의 miRNA는 하나의 mRNA만 조절한다."],
+  a:1, ex:"불완전 상보 → 번역 억제(주 방식) / 완전 상보 → 절단·분해. Drosha+DGCR8 핵, Dicer+TRBP 세포질. 하나의 miRNA가 여러 mRNA를 조절.", ref:"5주차 p.47–50 · 2부 01:17′30″" },
+
+{ id:"w5-06", w:5, topic:"Polyadenylation 억제", src:"2025 Q39 변형", fixed:true,
+  q:"세포에 CPSF의 기능을 막는 물질을 처리했다. 예상되는 변화로 옳은 것만 고른 것은?\n가. mRNA poly(A) 꼬리 형성 감소\n나. mRNA 전사 속도 감소\n다. 세포 내 mRNA 양 감소\n라. 만들어지는 단백질의 크기 증가",
+  c:["가, 나","가, 다","나, 라","가, 다, 라","가, 나, 다, 라"],
+  a:1, ex:"CPSF가 poly(A) 신호를 인지하지 못함 → poly(A) 꼬리↓ → mRNA 불안정 → 양↓ → 단백질 양↓. 전사 속도와 단백질 크기는 그대로. (2025: 인플루엔자 NS1A가 CPSF30에 결합)", ref:"5주차 p.34, 44 · 2부 01:05′24″" },
+
+{ id:"w5-07", w:5, topic:"Core promoter 요소", src:"2022 Q7 변형",
+  q:"진핵 core promoter 요소 중 가장 흔하게 발견되는 것은?",
+  c:["TATA box","Initiator(Inr)","BRE","MTE·DPE","GC box"],
+  a:1, ex:"Inr 약 50%(+1 부근) · MTE/DPE 약 15% · TATA 약 12.5%. GC box는 promoter-proximal 요소.", ref:"5주차 p.9" },
+
+{ id:"w5-08", w:5, topic:"전사인자 활성 조절", src:"신작",
+  q:"전사인자의 활성을 조절하는 방법과 예의 연결로 옳지 않은 것은?",
+  c:["리간드 결합 – 핵수용체",
+     "억제 단백질 해리 후 핵 진입 – glucocorticoid receptor(Hsp90)",
+     "인산화 – CREB",
+     "큰 전구체의 절단 – SREBP",
+     "CREB – ER에서 Golgi로 이동해 잘린 뒤 N-말단이 activator로 작동"],
+  a:4, ex:"ER → Golgi에서 잘려 N-말단이 activator가 되는 것은 SREBP(콜레스테롤 대사). CREB는 인산화로 활성화.", ref:"5주차 p.25–28" },
+
+{ id:"w5-09", w:5, topic:"번역 개시 조절", src:"신작",
+  q:"번역 개시 조절에 대한 설명으로 옳지 않은 것은?",
+  c:["Heme이 충분하면 HRI kinase가 억제되어 eIF2α가 활성 상태로 남고 globin이 번역된다.",
+     "철이 부족하면 eIF2α가 인산화되어 globin 합성이 줄고 빈혈이 생긴다.",
+     "GCN2는 아미노산 부족(uncharged tRNA)에 반응해 eIF2α를 인산화한다.",
+     "PKR은 바이러스의 이중가닥 RNA에 반응해 eIF2α를 인산화한다.",
+     "Insulin은 4E-BP를 탈인산화해 eIF4E를 묶어 번역을 억제한다."],
+  a:4, ex:"Insulin은 4E-BP를 '인산화'해 eIF4E를 풀어준다 → 번역 개시. 교수님: 번역 조절은 개시 단계가 가장 중요(Quiz-8 답 = 번역).", ref:"5주차 p.41–42, 51 · 2부 42′34″–49′01″" },
+
+{ id:"w5-10", w:5, topic:"한 유전자 → 여러 단백질", src:"2025 Q40 변형",
+  q:"한 유전자에서 여러 단백질이 만들어지는 예와 기전의 연결로 옳지 않은 것은?",
+  c:["Fibronectin – alternative splicing",
+     "IgM 막결합형 → 분비형 – alternative poly(A) site",
+     "Glucokinase – alternative promoter",
+     "ApoB-48 – RNA editing",
+     "Glucokinase – 조직마다 효소 기능이 서로 다른 단백질이 만들어짐"],
+  a:4, ex:"Glucokinase는 조직에 따라 전사 시작점이 달라 N-말단이 다른 단백질이 되지만, 효소 기능은 같다.", ref:"5주차 p.33–36 · 2부 28′05″–30′45″" },
+
+/* ───────── 7주차 이남규 ───────── */
+{ id:"w7-01", w:7, topic:"아미노산 성질 · PTM", src:"2025 Q44 변형",
+  q:"아미노산에 대한 설명으로 옳지 않은 것은?",
+  c:["Asn(N)과 Gln(Q)은 전하를 띠지 않지만 극성이다.",
+     "가장 강한 양전하를 띠는 아미노산은 Arg(R)이다.",
+     "인산화되는 아미노산은 Ser, Thr, Tyr이다.",
+     "N-linked glycosylation은 Asn에 일어난다.",
+     "O-linked glycosylation은 주로 Lys에 일어난다."],
+  a:4, ex:"O-linked = Ser·Thr. Lys은 acetylation·methylation 자리. 2025에서는 '인산화 S, H, Y'가 오답이었다.", ref:"7주차 p.10–11, 24" },
+
+{ id:"w7-02", w:7, topic:"Gly · Pro", src:"2022 Q2 변형",
+  q:"Glycine에 대한 설명으로 옳지 않은 것은?",
+  c:["가장 작은 아미노산이다.",
+     "Cα에 H가 2개라 achiral(광학 활성 없음)이다.",
+     "유연해서 β-turn에 흔하다.",
+     "Collagen에서 3번째 아미노산마다 나타난다.",
+     "고리 구조라 φ각이 고정되어 α-helix를 가장 강하게 깨뜨린다."],
+  a:4, ex:"고리 구조로 α-helix를 깨는 것은 Pro(N–H 없음). Gly와 Pro 둘 다 turn에 흔하다.", ref:"7주차 p.4, 8, 15, 48" },
+
+{ id:"w7-03", w:7, topic:"이온화 · 순전하", src:"2025 Q43 변형", fixed:true,
+  q:"생리적 pH(약 7.4)에서 자유 아미노산 Glu의 순전하는?",
+  c:["−2","−1","0","+1","+2"],
+  a:1, ex:"pKa: α-COOH(~2) → 곁사슬 COOH(4.1) → α-NH₃⁺(~9.7). pH 7.4에서 두 카복실기는 COO⁻(−2), 아미노기는 NH₃⁺(+1) → −1. pH를 올리면 +1 → 0 → −1 → −2.", ref:"7주차 p.5, 16–18 · 28′37″" },
+
+{ id:"w7-04", w:7, topic:"pH · pKa · pI", src:"신작",
+  q:"pH, pKa, pI에 대한 설명으로 옳지 않은 것은?",
+  c:["pKa는 작용기의 protonated형과 deprotonated형이 50:50이 되는 pH이다.",
+     "pH가 pKa보다 낮으면 그 작용기는 주로 protonated 상태이다.",
+     "pH가 pI보다 높으면 단백질의 순전하는 (+)이다.",
+     "His은 pKa가 약 6이라 산–염기 촉매로 쓰인다.",
+     "pH 7.4에서 Cys 일부는 thiolate(S⁻)로 존재해 강한 친핵체로 작용한다."],
+  a:2, ex:"pH < pI → (+), pH > pI → (−). pH가 높으면 H⁺를 잃어 음전하 쪽.", ref:"7주차 p.16–20 · 30′45″–31′49″" },
+
+{ id:"w7-05", w:7, topic:"펩티드 결합", src:"2025 Q45 변형",
+  q:"펩티드 결합에 대한 설명으로 옳지 않은 것은?",
+  c:["공명으로 부분적인 이중결합 성격을 가진다.",
+     "펩티드 결합 주변 6개 원자는 한 평면 위에 놓인다.",
+     "대부분 trans 배열이다.",
+     "Pro 앞의 펩티드 결합은 cis 배열이 가능하다.",
+     "펩티드 결합이 자유롭게 회전하면서 2차 구조를 결정한다."],
+  a:4, ex:"펩티드 결합은 회전하지 못한다. 2차 구조를 정하는 회전은 Cα 양옆의 φ·ψ각.", ref:"7주차 p.6 · (보충)" },
+
+{ id:"w7-06", w:7, topic:"α-helix", src:"2022 주관식1–2 변형",
+  q:"α-helix에 대한 설명으로 옳은 것은?",
+  c:["잔기 i의 C=O와 i+4의 N–H가 수소결합하고, 한 turn은 약 3.6개 잔기이다.",
+     "잔기 i와 i+3 사이에 수소결합하고, 한 turn은 정확히 3개 잔기이다.",
+     "곁사슬은 helix 안쪽을 향한다.",
+     "Pro는 α-helix를 안정화한다.",
+     "수소결합은 곁사슬 사이에서 형성된다."],
+  a:0, ex:"backbone C=O ··· H–N(i → i+4), 3.6잔기/turn, 곁사슬은 바깥. Pro는 N–H가 없어 helix를 깬다. '1 turn = 3개'는 옛 기출 함정.", ref:"7주차 p.30 · 1:04′53″" },
+
+{ id:"w7-07", w:7, topic:"Hb · Mb", src:"옛 기출 [17·19] 변형",
+  q:"Hemoglobin과 myoglobin에 대한 설명으로 옳지 않은 것은?",
+  c:["Myoglobin은 단량체로 hyperbolic 곡선을 보인다.",
+     "Hemoglobin은 α₂β₂ 사량체로 sigmoidal 곡선을 보인다.",
+     "2,3-BPG는 T 상태를 안정화해 곡선을 오른쪽으로 이동시킨다.",
+     "pH가 낮아지면(Bohr 효과) 곡선이 오른쪽으로 이동해 조직에서 O₂ 방출이 늘어난다.",
+     "태아 Hb는 2,3-BPG의 영향을 더 크게 받아 성인 Hb보다 산소 친화도가 낮다."],
+  a:4, ex:"태아 Hb는 2,3-BPG 영향이 '작아서' 친화도가 높다(왼쪽) → 엄마 혈액에서 O₂를 받아올 수 있다.", ref:"7주차 p.40–44 · 1:29′54″" },
+
+{ id:"w7-08", w:7, topic:"Collagen", src:"2022 Q6 변형",
+  q:"Collagen에 대한 설명으로 옳지 않은 것은?",
+  c:["세 사슬이 triple helix를 이룬다.",
+     "Gly–X–Y 반복으로 3번째마다 Gly가 온다.",
+     "X·Y 자리에는 Pro와 hydroxyproline이 많다.",
+     "Pro·Lys hydroxylation에 vitamin C가 필요하다.",
+     "Lysyl oxidase가 Pro를 hydroxylation하여 cross-link를 만든다."],
+  a:4, ex:"Lysyl oxidase는 Lys을 allysine으로 바꿔 cross-link를 만든다. hydroxylation은 prolyl/lysyl hydroxylase(vit C · Fe²⁺ · O₂ · α-KG 필요) → 결핍 시 괴혈병.", ref:"7주차 p.48–49 · 1:47′41″" },
+
+{ id:"w7-09", w:7, topic:"Selenocysteine", src:"옛 기출 [21] 변형", fixed:true,
+  q:"Selenocysteine(Sec)에 대한 설명으로 옳은 것만 고른 것은?\n가. 종결코돈 UGA를 Sec 코돈으로 재해석한다.\n나. mRNA의 SECIS 요소와 전용 tRNA가 필요하다.\n다. Cys가 단백질에 들어간 뒤 번역 후 변형으로 만들어진다.\n라. GPX4 같은 redox 효소에 들어 있다.",
+  c:["가, 나","가, 나, 라","나, 다","가, 다, 라","가, 나, 다, 라"],
+  a:1, ex:"Sec은 번역 중 직접 들어간다(genetically encoded, 21번째). 번역 후 변형이 아니다. 황 대신 셀레늄.", ref:"7주차 p.13 · 16′12″" },
+
+{ id:"w7-10", w:7, topic:"Chaperone · 변성 · 질환", src:"신작",
+  q:"단백질 접힘과 관련 질환에 대한 설명으로 옳지 않은 것은?",
+  c:["Hsp70은 새로 만들어지거나 풀린 사슬에 결합한다.",
+     "PDI는 잘못 형성된 disulfide 결합을 재배열한다.",
+     "HbA1c는 Schiff base가 Amadori 재배열을 거친 ketoamine이다.",
+     "병원성 prion(PrPˢᶜ)은 β-sheet가 많고 응집한다.",
+     "단백질이 변성되면 항상 펩티드 결합이 끊어져 1차 구조가 파괴된다."],
+  a:4, ex:"변성은 2·3·4차 구조가 풀리는 것이고 펩티드 결합이 꼭 끊어지지는 않는다.", ref:"7주차 p.47, 50–52" },
+/* ───────── 1주차 추가 ───────── */
+{ id:"w1-11", w:1, topic:"Nucleosome", src:"2025 Q1 변형",
+  q:"Nucleosome과 염색질 구조에 대한 설명으로 옳지 않은 것은?",
+  c:["Histone octamer는 H2A·H2B·H3·H4가 각 2분자씩 모여 만든다.",
+     "Nucleosome core에는 약 147 bp의 DNA가 감긴다.",
+     "Nucleosome 사이의 linker DNA에 histone H1이 붙는다.",
+     "Nucleosome core의 지름은 약 11 nm이다.",
+     "Histone H1은 octamer를 구성하는 core histone 중 하나이다."],
+  a:4, ex:"H1은 linker histone이다. octamer 밖에서 linker DNA에 붙어 solenoid 같은 고차 구조를 만든다.", ref:"1주차 p.8–10" },
+
+{ id:"w1-12", w:1, topic:"인간 유전체", src:"2022·2023 서술1 변형",
+  q:"인간 유전체에 대한 설명으로 옳지 않은 것은?",
+  c:["약 30억 개의 염기로 이루어져 있다.",
+     "단백질 암호화 유전자는 약 22,000개이다.",
+     "단백질을 암호화하는 서열은 전체의 약 1.2%이다.",
+     "Exome은 전체 유전체의 약 1.5%이다.",
+     "유전자 수가 만들어지는 단백질 종류보다 많다."],
+  a:4, ex:"반대다. 단백질 종류가 유전자 수보다 훨씬 많다. 대표 기전은 alternative splicing.", ref:"1주차 p.3–5" },
+
+{ id:"w1-13", w:1, topic:"Hybridization · 변성", src:"2025 Q3 변형",
+  q:"DNA·RNA의 결합과 변성에 대한 설명으로 옳은 것은?",
+  c:["알칼리에서 DNA는 당-인산 골격이 끊어져 조각난다.",
+     "RNA는 2′-OH 때문에 알칼리에서 가수분해되어 조각난다.",
+     "G–C 염기쌍은 수소결합 2개로 연결된다.",
+     "GC 함량이 높을수록 두 가닥이 쉽게 떨어진다.",
+     "DNA와 RNA는 서로 hybridization할 수 없다."],
+  a:1, ex:"알칼리에서 DNA는 가닥만 떨어지고, 조각나는 것은 RNA다. A–T 2개, G–C 3개라 GC가 많을수록 단단히 붙는다. DNA–RNA도 붙는다.", ref:"1주차 p.12, 18–20 · 클로바노트 21′36″" },
+
+{ id:"w1-14", w:1, topic:"Mismatch repair", src:"2022 서술9 변형",
+  q:"Mismatch repair(MMR)에 대한 설명으로 옳지 않은 것은?",
+  c:["대장균에서는 MutS·MutL·MutH가 작용한다.",
+     "사람에서는 MSH·MLH 단백질이 작용한다.",
+     "복제 때 잘못 짝지어진 염기를 고친다.",
+     "MMR 유전자 이상은 유전성 비폴립성 대장암과 관련된다.",
+     "대장균은 메틸화된 가닥을 새로 만든 가닥으로 인식해 잘라 낸다."],
+  a:4, ex:"새 가닥은 아직 메틸화되지 않은 가닥이다. MutH가 메틸화 안 된 쪽을 잘라 낸다.", ref:"1주차 p.46–48, 86" },
+
+{ id:"w1-15", w:1, topic:"NER", src:"신작",
+  q:"포유류 nucleotide excision repair(NER)에 대한 설명으로 옳지 않은 것은?",
+  c:["XPC가 손상을 인식한다.",
+     "TFIIH(XPB·XPD)가 손상 부위의 DNA를 푼다.",
+     "XPG와 XPF/ERCC1이 손상 양쪽을 자른다.",
+     "손상을 포함한 올리고뉴클레오타이드가 제거된다.",
+     "DNA glycosylase가 손상된 염기 하나만 떼어 낸다."],
+  a:4, ex:"염기 하나를 glycosylase로 떼어 내는 것은 BER이다. NER은 부피 큰 손상(thymine dimer 등)을 조각째 잘라 낸다.", ref:"1주차 p.43–44" },
+
+{ id:"w1-16", w:1, topic:"BER 순서", src:"신작", fixed:true,
+  q:"Cytosine이 탈아미노화되어 uracil이 된 손상을 BER로 고치는 순서로 옳은 것은?",
+  c:["DNA glycosylase → AP endonuclease → polymerase·ligase",
+     "AP endonuclease → DNA glycosylase → polymerase·ligase",
+     "Polymerase → DNA glycosylase → ligase",
+     "XPC → TFIIH → XPG·XPF",
+     "MutS → MutL → MutH"],
+  a:0, ex:"glycosylase가 염기를 떼어 AP 자리를 만들고 → AP endonuclease가 골격을 자르고 → polymerase가 채우고 ligase가 잇는다. XPC 순서는 NER, MutS 순서는 MMR.", ref:"1주차 p.43" },
+
+{ id:"w1-17", w:1, topic:"Hallmarks", src:"2025 Q11 변형",
+  q:"2000년에 처음 제시된 원래 6가지 hallmarks of cancer에 속하지 않는 것은?",
+  c:["Sustaining proliferative signaling","Evading growth suppressors","Enabling replicative immortality","Inducing angiogenesis","Avoiding immune destruction"],
+  a:4, ex:"Avoiding immune destruction은 2011년에 추가된 emerging hallmark다. 원래 6개 = 증식 신호 유지 · 성장 억제 회피 · 세포사 저항 · 무한 복제 · 혈관 신생 · 침습·전이.", ref:"1주차 p.62–63" },
+
+{ id:"w1-18", w:1, topic:"Telomerase", src:"2023 Q23 변형",
+  q:"사람 telomerase가 가지고 다니는 RNA template 서열로 옳은 것은?",
+  c:["TTAGGG","AAUCCC","UUAGGG","CCCUAA","GGGTTA"],
+  a:1, ex:"Telomerase는 자기 RNA template(AAUCCC)를 주형으로 3′ overhang에 TTAGGG 반복을 덧붙인다. 2023에는 'TTAGGT'가 오답 선지였다.", ref:"1주차 p.35 · 클로바노트 42′13″" },
+
+{ id:"w1-19", w:1, topic:"DNA 손상 원인", src:"신작",
+  q:"DNA 손상 원인과 결과의 연결로 옳지 않은 것은?",
+  c:["담배의 benzo[a]pyrene – guanine에 붙는 adduct",
+     "UV – 이웃한 T–T 사이 thymine dimer",
+     "전리방사선(X-ray·CT) – 이중가닥 절단(DSB)",
+     "Cytosine 탈아미노화 – uracil",
+     "UV – 주로 이중가닥 절단을 일으켜 NHEJ로 복구"],
+  a:4, ex:"UV는 thymine dimer를 만들고, 이는 NER(또는 photoreactivation)로 고친다. DSB의 주 원인은 전리방사선.", ref:"1주차 p.36–37, 49 · 클로바노트 1:02′30″" },
+
+{ id:"w1-20", w:1, topic:"복제 방향 · 원점", src:"신작",
+  q:"DNA 복제에 대한 설명으로 옳지 않은 것은?",
+  c:["DNA 합성은 항상 5′→3′ 방향으로 일어난다.",
+     "Leading strand는 한 번 시작해 연속적으로 합성된다.",
+     "Lagging strand는 짧은 Okazaki 절편을 반복해 만든다.",
+     "세균은 원형 염색체에 복제 원점이 1개 있다.",
+     "사람 염색체는 복제 원점이 1개이고 한 방향으로만 복제된다."],
+  a:4, ex:"사람은 긴 선형 염색체라 원점이 여러 개이고, 각 원점에서 양방향으로 진행한다.", ref:"1주차 p.22, 26, 29 · 클로바노트 33′14″" },
+
+/* ───────── 2주차 추가 ───────── */
+{ id:"w2-11", w:2, topic:"5′ cap", src:"2022 Q17 변형",
+  q:"진핵 mRNA의 5′ cap에 대한 설명으로 옳은 것은?",
+  c:["3′–5′ phosphodiester 결합으로 첫 염기에 연결된다.",
+     "7-methylguanosine이 5′–5′ triphosphate로 연결된다.",
+     "전사가 모두 끝난 뒤 세포질에서 붙는다.",
+     "Adenosine 여러 개가 주형 없이 붙은 구조이다.",
+     "번역 종결 신호로 작용한다."],
+  a:1, ex:"Capping은 전사 시작 직후 핵에서 일어난다. 1·2번째 ribose의 2′-OH도 메틸화된다. 분해 억제 + 번역 개시 때 리보솜 인지.", ref:"2주차 p.41–42" },
+
+{ id:"w2-12", w:2, topic:"rRNA 가공", src:"2025 Q22 변형",
+  q:"진핵 rRNA의 합성과 가공에 대한 설명으로 옳지 않은 것은?",
+  c:["RNAP Ⅰ이 47S 전구체를 만든다.",
+     "47S → 45S pre-rRNA를 거쳐 18S·5.8S·28S rRNA가 된다.",
+     "snoRNP가 2′-O-methylation과 pseudouridylation을 한다.",
+     "5S rRNA는 핵질에서 RNAP Ⅲ가 만든다.",
+     "18S, 5.8S, 28S rRNA는 서로 다른 RNA polymerase가 따로 전사한다."],
+  a:4, ex:"18S·5.8S·28S는 한 전구체(47S)에서 잘려 나온다. 셋 다 nucleolus에서 RNAP Ⅰ이 만든다.", ref:"2주차 p.44" },
+
+{ id:"w2-13", w:2, topic:"ncRNA 종류", src:"2025 Q24 변형",
+  q:"ncRNA와 특징의 연결로 옳지 않은 것은?",
+  c:["snRNA – splicing","snoRNA – rRNA 가공","piRNA – 생식세포 유전체 안정성","miRNA – 성숙형 약 22 nt","tRNA – 200 nt 이상의 긴 RNA"],
+  a:4, ex:"tRNA는 73–93개 염기. 200 nt 이상은 lncRNA의 기준이다.", ref:"2주차 p.9–13" },
+
+{ id:"w2-14", w:2, topic:"미토콘드리아 RNA", src:"신작",
+  q:"미토콘드리아 DNA(mtDNA)에 대한 설명으로 옳지 않은 것은?",
+  c:["미토콘드리아는 알파프로테오박테리아가 공생해 생겼다.",
+     "mtDNA는 단백질 13개를 암호화한다.",
+     "mtDNA는 tRNA 22개를 암호화한다.",
+     "mtDNA는 rRNA 2개를 암호화한다.",
+     "mtDNA가 암호화하는 단백질은 모두 해당과정 효소이다."],
+  a:4, ex:"13개 단백질은 모두 산화적 인산화 복합체(Ⅰ·Ⅲ·Ⅳ·Ⅴ)의 소단위다.", ref:"2주차 p.15–16" },
+
+{ id:"w2-15", w:2, topic:"α-amanitin", src:"2025 Q23 변형",
+  q:"독버섯의 α-amanitin을 낮은 농도로 처리했을 때 합성이 가장 크게 줄어드는 RNA는?",
+  c:["mRNA","18S rRNA","tRNA","5S rRNA","28S rRNA"],
+  a:0, ex:"낮은 농도에서는 RNAP Ⅱ만 강하게 억제된다 → mRNA 합성 억제 → 간부전. RNAP Ⅲ(tRNA·5S)는 높은 농도에서, RNAP Ⅰ(18S·28S)은 영향 없음.", ref:"2주차 p.22–26" },
+
+{ id:"w2-16", w:2, topic:"원핵 개시", src:"2025 Q21 변형",
+  q:"원핵세포 전사 개시에 대한 설명으로 옳은 것은?",
+  c:["σ 인자가 promoter를 인식하고 −10 지역을 풀어 open complex를 만든다.",
+     "σ 인자가 RNA 합성 반응 자체를 촉매한다.",
+     "ρ 인자가 promoter를 인식해 전사를 시작한다.",
+     "원핵세포에는 RNA polymerase가 3종류 있다.",
+     "σ 인자는 전사가 끝날 때까지 RNA polymerase에 붙어 있다."],
+  a:0, ex:"σ가 붙은 holoenzyme이 promoter를 인식하고, 약 10 nt가 결합한 뒤 σ는 떨어진다. 원핵 RNAP는 1종, ρ는 종결 인자.", ref:"2주차 p.23, 29" },
+
+{ id:"w2-17", w:2, topic:"진핵 전사 · cis/trans", src:"신작",
+  q:"진핵세포 전사에 대한 설명으로 옳지 않은 것은?",
+  c:["히스톤 아세틸화는 전사 활성과 관련된다.",
+     "RNAP Ⅱ와 일반전사인자(GTF)가 모여 PIC를 만든다.",
+     "Enhancer에 붙은 전사인자가 전사를 더 높인다.",
+     "Promoter·enhancer 같은 조절 서열을 cis 요소라 한다.",
+     "전사인자는 DNA 서열 자체이므로 cis-acting element라 한다."],
+  a:4, ex:"조절 서열(DNA) = cis, 거기에 붙는 단백질(전사인자) = trans.", ref:"2주차 p.32–35" },
+
+{ id:"w2-18", w:2, topic:"m6A", src:"신작",
+  q:"m6A RNA 변형 관련 단백질의 연결로 옳지 않은 것은?",
+  c:["METTL3 – writer (촉매)","WTAP – writer 복합체","FTO – eraser","ALKBH5 – eraser","METTL14 – eraser"],
+  a:4, ex:"Writer = METTL3(촉매)·METTL14·WTAP / Eraser = FTO·ALKBH5. 교수님: 최근에는 reader가 더 중요할 수 있다는 보고가 많다.", ref:"2주차 p.54 · 클로바노트 1:05′44″" },
+
+{ id:"w2-19", w:2, topic:"Epigenetics", src:"신작", fixed:true,
+  q:"Epigenetics의 기전으로 옳은 것만 고른 것은?\n가. DNA 메틸화\n나. 히스톤 변형\n다. ncRNA\n라. DNA 염기의 점 돌연변이",
+  c:["가, 나","가, 다","가, 나, 다","나, 다, 라","가, 나, 다, 라"],
+  a:2, ex:"Epigenetics는 염기 서열을 바꾸지 않고 발현을 조절한다. 점 돌연변이는 genetics.", ref:"2주차 p.47–50 · 클로바노트 1:00′31″" },
+
+{ id:"w2-20", w:2, topic:"LNP", src:"2022 주관식5 변형",
+  q:"RNA 약물 전달에 쓰는 LNP에 대한 설명으로 옳지 않은 것은?",
+  c:["Ionizable lipid를 포함한다.",
+     "인지질, 콜레스테롤, PEG-lipid를 포함한다.",
+     "크기는 약 50–100 nm이다.",
+     "혈중 RNase로부터 RNA를 보호한다.",
+     "Endosomal escape를 막아 RNA가 endosome 안에 머물게 한다."],
+  a:4, ex:"LNP는 endosomal escape를 '도와' RNA를 세포질로 보낸다.", ref:"2주차 p.61, 66" },
+
+/* ───────── 3주차 추가 ───────── */
+{ id:"w3-11", w:3, topic:"Lac operon", src:"2025 Q32 변형",
+  q:"Glucose가 낮고 lactose가 없을 때 lac operon의 상태로 옳은 것은?",
+  c:["CAP-cAMP는 결합할 수 있지만 repressor가 operator에 붙어 발현이 없다.",
+     "Repressor가 떨어지고 CAP-cAMP가 결합해 강하게 발현된다.",
+     "cAMP가 낮아 CAP이 결합하지 못하지만 repressor는 떨어져 있다.",
+     "Allolactose가 repressor에 붙어 발현이 조금 일어난다.",
+     "Glucose가 corepressor로 작용해 발현을 억제한다."],
+  a:0, ex:"Glucose↓ → cAMP↑ → CAP-cAMP 준비 완료. 하지만 lactose가 없으니 inducer(allolactose)도 없어서 repressor가 operator를 막는다.", ref:"3주차 p.20–21" },
+
+{ id:"w3-12", w:3, topic:"Trp attenuation", src:"2022 Q15 변형", fixed:true,
+  q:"세포 내 트립토판이 부족할 때 trp leader에서 일어나는 일을 순서대로 옳게 나열한 것은?",
+  c:["리보솜이 1번 영역에서 멈춤 → 2–3 짝짓기 → 전사 계속",
+     "리보솜이 1번 영역에서 멈춤 → 3–4 짝짓기 → 전사 종결",
+     "리보솜이 leader를 끝까지 번역 → 3–4 짝짓기 → 전사 종결",
+     "리보솜이 leader를 끝까지 번역 → 2–3 짝짓기 → 전사 계속",
+     "Trp-repressor가 operator에 결합 → 전사 억제"],
+  a:0, ex:"Trp-tRNA가 모자라 1번의 Trp codon에서 stall → 2–3 짝(종결 방지) → trpE~A까지 전사. 3번째 선지는 Trp가 많을 때.", ref:"3주차 p.23" },
+
+{ id:"w3-13", w:3, topic:"Attenuation 범위", src:"신작",
+  q:"Attenuation에 대한 설명으로 옳지 않은 것은?",
+  c:["Leader peptide에 해당 아미노산 codon이 연달아 있다.",
+     "히스티딘·류신·페닐알라닌·트레오닌 생합성 operon도 attenuation으로 조절된다.",
+     "RNA 2차 구조 변화로 전사가 일찍 끝나거나 계속된다.",
+     "전사와 번역이 동시에 일어나는 원핵에서 가능하다.",
+     "Attenuation은 트립토판 operon에만 있는 기전이다."],
+  a:4, ex:"여러 아미노산 생합성 operon이 같은 방식으로 조절된다. 교수님: 전사 약화는 특수한 기전이니 따로 기억하라.", ref:"3주차 p.22–24 · 클로바노트 17′36″" },
+
+{ id:"w3-14", w:3, topic:"Inducible vs constitutive", src:"신작",
+  q:"원핵 유전자 발현 조절 용어에 대한 설명으로 옳은 것은?",
+  c:["Housekeeping 단백질처럼 늘 발현되는 것을 constitutive 발현이라 한다.",
+     "신호가 와도 발현량이 변하지 않는 것을 inducible 발현이라 한다.",
+     "Cistron은 여러 폴리펩타이드를 암호화하는 최대 단위이다.",
+     "진핵 mRNA는 대부분 polycistronic하다.",
+     "원핵세포는 핵막이 있어 전사와 번역이 분리된다."],
+  a:0, ex:"Inducible = 신호에 반응해 발현 증가. Cistron = 폴리펩타이드 하나를 암호화하는 최소 단위. 원핵 polycistronic, 진핵 monocistronic.", ref:"3주차 p.13–14" },
+
+{ id:"w3-15", w:3, topic:"Euchromatin · heterochromatin", src:"2025 Q30 변형",
+  q:"염색질 상태에 대한 설명으로 옳지 않은 것은?",
+  c:["Euchromatin은 느슨하고 전사가 가능한 open chromatin이다.",
+     "Heterochromatin은 고도로 응축되어 어둡게 보인다.",
+     "DNase I은 열린 염색질을 더 잘 자른다.",
+     "Linker DNA는 약 10–60 bp이다.",
+     "Heterochromatin에서는 전사가 완전히 0이다."],
+  a:4, ex:"Heterochromatin은 전사를 억제하지만 완전히 없지는 않다.", ref:"3주차 p.28–29" },
+
+{ id:"w3-16", w:3, topic:"히스톤 아세틸화", src:"2022 Q12 변형",
+  q:"히스톤 아세틸화에 대한 설명으로 옳지 않은 것은?",
+  c:["히스톤과 DNA의 결합을 약하게 만든다.",
+     "염색질을 느슨하게 해 전사를 활성화한다.",
+     "HAT가 아세틸기를 붙인다.",
+     "메틸화와 달리 방향(활성)이 일정하다.",
+     "HDAC는 아세틸기를 붙여 염색질을 느슨하게 만든다."],
+  a:4, ex:"HDAC는 아세틸기를 떼어 염색질을 응축시킨다. 교수님: 아세틸화는 방향이 일정해 기억하기 쉽고, 메틸화는 각각 다 알아야 한다.", ref:"3주차 p.43–44 · 클로바노트 49′17″" },
+
+{ id:"w3-17", w:3, topic:"Chromatin remodeling · histone code", src:"신작",
+  q:"히스톤 변형과 염색질 리모델링에 대한 설명으로 옳지 않은 것은?",
+  c:["히스톤 변형에는 writer, eraser, reader가 있다.",
+     "히스톤 변형에는 아세틸화·메틸화·인산화·유비퀴틴화가 있다.",
+     "특정 변형의 조합을 reader가 읽는다는 것이 histone code 가설이다.",
+     "Lys·Arg 메틸화는 mono·di·tri가 가능하다.",
+     "SWI/SNF는 ATP 없이 히스톤에 메틸기를 붙이는 효소이다."],
+  a:4, ex:"SWI/SNF는 ATP 의존 chromatin remodeler다. 메틸기를 붙이는 효소가 아니라 nucleosome 배치를 바꿔 판을 깐다.", ref:"3주차 p.38–46" },
+
+{ id:"w3-18", w:3, topic:"Epigenetics 정의", src:"신작",
+  q:"Epigenetics에 대한 설명으로 옳지 않은 것은?",
+  c:["DNA 염기서열 변화 없이 나타나는 유전자 발현·기능의 변화이다.",
+     "환경의 영향을 받는다.",
+     "다음 세대로 전달될 수도 있다.",
+     "임신한 Agouti 쥐에 엽산·B12·콜린을 먹이면 새끼의 털색이 달라졌다.",
+     "세포분열이 일어나면 유지되지 않고 사라진다."],
+  a:4, ex:"Epigenetic 변화는 세포분열 후에도 유지된다(DNMT1의 유지 메틸화가 예).", ref:"3주차 p.32–37" },
+
+{ id:"w3-19", w:3, topic:"Epigenetic therapy", src:"2023 서술6 변형",
+  q:"Epigenetic therapy에 대한 설명으로 옳지 않은 것은?",
+  c:["Epigenetic 변화는 가역적이라 약의 표적이 될 수 있다.",
+     "1세대 약은 HDAC 억제제와 DNMT 억제제이다.",
+     "최근에는 아세틸화 reader 억제제가 개발되고 있다.",
+     "최근 cancer hallmark에 epigenetic reprogramming이 추가되었다.",
+     "EZH2 억제제는 H3K4me3를 없애 전사를 억제한다."],
+  a:4, ex:"EZH2는 PRC2의 효소로 억제 표지 H3K27me3를 만든다. EZH2 억제제는 이 억제 표지를 줄인다.", ref:"3주차 p.49, 56, 61 · 클로바노트 1:10′28″" },
+
+{ id:"w3-20", w:3, topic:"원핵 vs 진핵", src:"신작",
+  q:"진핵세포의 유전자 발현에 대한 설명으로 옳지 않은 것은?",
+  c:["전사는 핵, 번역은 세포질에서 일어나 분리되어 있다.",
+     "RNA polymerase가 3종류 있다.",
+     "유전자에 intron이 있다.",
+     "Promoter는 RNA polymerase와 일반전사인자가 함께 인식한다.",
+     "여러 유전자를 operon으로 묶어 함께 조절하는 것이 주된 방식이다."],
+  a:4, ex:"Operon은 세균에만 있다. 진핵은 전사·가공·번역·번역 후 변형 등 여러 단계에서 조절한다.", ref:"3주차 p.15, 25–27" },
+
+/* ───────── 4주차 추가 ───────── */
+{ id:"w4-11", w:4, topic:"양성 vs 악성", src:"신작",
+  q:"양성종양(tumor)과 악성종양(cancer)을 가르는 핵심 특징은?",
+  c:["침습(invasion)","세포 크기 증가","핵분열 횟수","종양 바이러스 감염 여부","APC 변이 유무"],
+  a:0, ex:"선종에서 암으로 넘어가는 기준은 주변 조직으로의 침습이다.", ref:"1주차 p.60" },
+
+{ id:"w4-12", w:4, topic:"HPV E7", src:"신작",
+  q:"HPV의 E7 단백질이 암을 일으키는 방식은?",
+  c:["pRB와 E2F의 결합을 방해한다.","p53을 분해한다.","PDGF 수용체를 올리고머화한다.","RAS를 항상 켜진 상태로 만든다.","BCR-ABL 융합 단백질을 만든다."],
+  a:0, ex:"E7 → pRB–E2F 결합 방해(세포주기 브레이크 해제). E6 → p53 분해, E5 → PDGF-R 올리고머화.", ref:"4주차 p.28" },
+
+{ id:"w4-13", w:4, topic:"종양 바이러스", src:"신작",
+  q:"종양 바이러스와 관련 암·분류의 연결로 옳지 않은 것은?",
+  c:["HBV – 간암","HPV – 자궁경부암","EBV – Burkitt 림프종","RSV – RNA 종양 바이러스","HTLV-1 – DNA 종양 바이러스"],
+  a:4, ex:"HTLV-1은 RSV와 함께 RNA 종양 바이러스다. DNA 쪽은 HBV, HPV, HHV8, adenovirus 5, SV40.", ref:"4주차 p.13" },
+
+{ id:"w4-14", w:4, topic:"CML 진단", src:"2023 객관식15 변형",
+  q:"CML 환자의 핵형 분석(karyotyping)에서 확인되는 변화와 가장 관련 있는 것은?",
+  c:["융합 유전자 형성","Oncogene 증폭","TSG의 frame-shift 돌연변이","Proto-oncogene의 nonsense 돌연변이","유전 물질 결실"],
+  a:0, ex:"9;22 전좌로 BCR-ABL 융합 유전자가 생긴다. 염기 하나 수준의 변화는 핵형 분석으로 보이지 않는다.", ref:"4주차 p.30–31" },
+
+{ id:"w4-15", w:4, topic:"종양 이질성", src:"신작",
+  q:"암의 발생과 특징에 대한 설명으로 옳지 않은 것은?",
+  c:["암, 종양, 신생물(neoplasm)은 같은 뜻으로 쓰인다.",
+     "Gleason grading에서 1→5로 갈수록 정상 구조가 무너진다.",
+     "암의 상징이 게(crab)인 것은 암 덩어리가 단단하기 때문이다.",
+     "다단계 발암에서 유전체 불안정성은 변이 축적을 빠르게 한다.",
+     "한 종양 덩어리는 모두 같은 단계의 세포로 이루어진다."],
+  a:4, ex:"실제 종양 조직 한 장에 1~5단계가 섞여 있다 = 종양 이질성(heterogeneity).", ref:"4주차 p.3–8 · 영상 01′59″" },
+
+{ id:"w4-16", w:4, topic:"TSG 범주", src:"신작",
+  q:"Tumor suppressor gene 범주와 예의 연결로 옳지 않은 것은?",
+  c:["세포주기 브레이크 – p16, pRB","DNA 손상 checkpoint – p53","Apoptosis · 세포주기 억제 – PTEN","DNA 수선 효소 – BRCA","DNA 수선 효소 – RAS"],
+  a:4, ex:"RAS는 G 단백질 proto-oncogene이다.", ref:"4주차 p.16, 26" },
+
+{ id:"w4-17", w:4, topic:"TSG 기능 상실 기전", src:"2022·2023 서술14 변형",
+  q:"BRCA 같은 tumor suppressor gene이 기능을 잃는 기전이 아닌 것은?",
+  c:["유전자 증폭","점 돌연변이","결실(LOH)","CpG island 과메틸화","두 allele 모두의 손상"],
+  a:0, ex:"유전자 증폭은 proto-oncogene이 과다 생산되는 기전(HER2)이다. 대칭: 점 돌연변이/전좌/증폭 ↔ 점 돌연변이/결실/과메틸화.", ref:"4주차 p.18, 27" },
+
+{ id:"w4-18", w:4, topic:"HER2 표적 치료", src:"2025 Q14 변형",
+  q:"HER2 양성 유방암의 표적 치료제가 아닌 것은?",
+  c:["Trastuzumab","Pertuzumab","T-DM1","Imatinib"],
+  a:3, ex:"Imatinib은 BCR-ABL tyrosine kinase를 막는 CML 약이다.", ref:"4주차 p.20" },
+
+{ id:"w4-19", w:4, topic:"합성치사 적용", src:"2022·2023 서술16 변형",
+  q:"BRCA2 생식세포 변이가 있는 난소암 환자에게 합성치사 원리로 효과를 기대할 수 있는 약은?",
+  c:["PARP 억제제","Trastuzumab","HDAC 억제제","Imatinib","EZH2 억제제"],
+  a:0, ex:"BRCA 결손(HRR✗) + PARP 억제(BER✗) → 암세포만 사멸. 그래서 PARP 억제제는 BRCA 변이가 있을 때만 듣는다.", ref:"4주차 p.34 · 영상 14′25″" },
+
+{ id:"w4-20", w:4, topic:"Proto-oncogene 활성화", src:"2025 Q13 변형",
+  q:"Proto-oncogene이 oncogene으로 활성화되는 방식이 아닌 것은?",
+  c:["점 돌연변이","염색체 전좌","유전자 증폭","강한 프로모터 밑으로 옮겨짐","CpG island 과메틸화"],
+  a:4, ex:"CpG island 과메틸화는 TSG를 끄는 후성유전적 침묵이다. Proto-oncogene은 gain-of-function, 우성.", ref:"1주차 p.67, 71 · 4주차 p.18" },
+
+/* ───────── 5주차 추가 ───────── */
+{ id:"w5-11", w:5, topic:"Enhancer 성질", src:"2022 Q7 변형",
+  q:"Enhancer의 성질로 옳지 않은 것은?",
+  c:["Promoter에서 멀리 떨어져 있어도 작동한다.",
+     "Upstream과 downstream 모두에서 작동한다.",
+     "방향을 뒤집어도 작동한다.",
+     "Basal 복합체가 promoter에 붙는 것을 도와 작동한다.",
+     "같은 종의 promoter와만 작동한다."],
+  a:4, ex:"Enhancer는 다른 종(heterologous) promoter와도 작동한다. 교수님: promoter는 180° 뒤집으면 작동 안 하고, enhancer는 뒤집어도 똑같다.", ref:"5주차 p.10 · 1부 20′55″" },
+
+{ id:"w5-12", w:5, topic:"Coregulator", src:"신작",
+  q:"Coregulator에 대한 설명으로 옳지 않은 것은?",
+  c:["Coactivator와 corepressor는 주로 chromatin remodeling에 관여한다.",
+     "Mediator는 전사인자와 Pol Ⅱ·일반전사인자를 잇는 다리 역할을 한다.",
+     "Coactivator, corepressor, mediator는 서로 별개의 단백질이다.",
+     "Gene-specific 전사인자는 DNA 결합 domain과 coactivator 결합 domain을 가진다.",
+     "Coactivator는 DNA에 직접 결합해 전사를 활성화한다."],
+  a:4, ex:"Coregulator는 DNA에 직접 붙지 않는다. 교수님은 그림과 달리 coactivator가 mediator의 일부가 아니라고 바로잡았다.", ref:"5주차 p.11–13 · 1부 30′21″" },
+
+{ id:"w5-13", w:5, topic:"전사인자-DNA 결합", src:"신작",
+  q:"전사인자가 DNA에 결합하는 방식으로 옳은 것은?",
+  c:["Major groove의 염기와 수소결합하고, Arg·Lys(+)이 인산(−)과 이온결합한다.",
+     "주로 minor groove의 당과 공유결합한다.",
+     "Asp·Glu의 음전하가 인산과 결합한다.",
+     "DNA 염기를 잘라 내고 그 자리에 결합한다.",
+     "항상 RNA를 매개로 DNA에 결합한다."],
+  a:0, ex:"Major groove 염기와의 수소결합 + 염기성 아미노산과 인산의 이온결합.", ref:"5주차 p.12" },
+
+{ id:"w5-14", w:5, topic:"Heterodimer 핵수용체", src:"2025 Q37 변형",
+  q:"RXR과 heterodimer를 이루는 핵수용체(RAR, T3R, VDR)에 대한 설명으로 옳지 않은 것은?",
+  c:["항상 핵 안에 있다.",
+     "주로 RXR과 짝을 이룬다.",
+     "리간드가 없으면 corepressor(HDAC)와 결합해 전사를 억제한다.",
+     "리간드가 결합하면 corepressor가 coactivator(HAT)로 바뀐다.",
+     "리간드가 없을 때 Hsp90과 결합해 세포질에 머문다."],
+  a:4, ex:"세포질에서 Hsp90과 묶여 있는 것은 GR 같은 homodimer steroid 수용체다.", ref:"5주차 p.17–18" },
+
+{ id:"w5-15", w:5, topic:"DNA 결합 motif", src:"2023 Q18 변형",
+  q:"DNA 결합 motif에 대한 설명으로 옳지 않은 것은?",
+  c:["Leucine zipper는 7번째 아미노산마다 Leu가 있다.",
+     "Helix-turn-helix의 recognition helix는 major groove에 들어간다.",
+     "Helix-loop-helix는 myogenin·neurogenin 같은 분화 관련 전사인자에 있다.",
+     "C4 zinc finger는 핵수용체에 있다.",
+     "C2H2 zinc finger는 finger가 하나뿐이다."],
+  a:4, ex:"C2H2 zinc finger는 finger가 3개 이상이고, 사람 유전체에서 가장 흔한 DNA 결합 motif다. C4는 finger 2개.", ref:"5주차 p.20–24" },
+
+{ id:"w5-16", w:5, topic:"IgM poly(A)", src:"2025 Q39 변형",
+  q:"B세포 분화에 따른 IgM의 변화에 대한 설명으로 옳은 것은?",
+  c:["초기 pre-B세포는 poly(A) site 1을 써서 소수성 exon이 포함된 막결합형을 만든다.",
+     "초기 pre-B세포는 분비형, 후기에는 막결합형을 만든다.",
+     "두 형태의 차이는 RNA editing으로 생긴다.",
+     "두 형태의 차이는 서로 다른 유전자에서 온다.",
+     "Poly(A) site 선택은 단백질 크기에 영향을 주지 않는다."],
+  a:0, ex:"Alternative poly(A) site: 초기 site 1 → 막결합형 / 후기 site 2 → 분비형. site 선택이 단백질 자체를 바꾼다.", ref:"5주차 p.34 · 2부 28′05″–30′45″" },
+
+{ id:"w5-17", w:5, topic:"mRNA 안정성", src:"신작",
+  q:"GM-CSF mRNA가 빨리 분해되는 이유로 옳은 것은?",
+  c:["3′ UTR의 AUUUA 반복 서열 때문에 deadenylation이 빨리 일어난다.",
+     "5′ UTR에 IRE가 있어 번역이 차단된다.",
+     "Cap이 없이 만들어진다.",
+     "Intron이 남아 있어 핵 밖으로 나가지 못한다.",
+     "miRNA와 완전 상보적으로 결합한다."],
+  a:0, ex:"3′ UTR의 AUUUA 반복 → poly(A) 꼬리가 빨리 짧아짐 → 분해.", ref:"5주차 p.44" },
+
+{ id:"w5-18", w:5, topic:"조절 단계", src:"2022 Q8 변형",
+  q:"박윤규 교수님이 진핵 유전자 발현 조절 8단계 중 '주된(main) 단계'라고 강조한 것은?",
+  c:["전사","RNA 가공","핵 밖 수송","번역","단백질 분해"],
+  a:0, ex:"전사 조절이 가장 중요한 단계, 번역 조절에서는 개시 단계가 가장 중요. 수송은 수업에서 다루지 않음.", ref:"5주차 p.5 · 1부 04′33″" },
+
+{ id:"w5-19", w:5, topic:"miRNA 생성", src:"2022 Q10 변형",
+  q:"miRNA 생성 과정에 대한 설명으로 옳지 않은 것은?",
+  c:["pri-miRNA는 1000 nt 이상이다.",
+     "Drosha는 DGCR8과 함께 핵에서 작용한다.",
+     "pre-miRNA는 약 70 nt의 hairpin 구조이다.",
+     "사람에는 약 2,500개의 miRNA가 있다.",
+     "Dicer는 DGCR8과 함께 핵에서 pre-miRNA를 자른다."],
+  a:4, ex:"Dicer는 TRBP와 함께 세포질에서 작용한다. DGCR8은 Drosha의 짝.", ref:"5주차 p.47–48 · 2부 01:14′14″" },
+
+{ id:"w5-20", w:5, topic:"철 결핍", src:"2022 Q9 · 2023 Q17 변형",
+  q:"철 결핍성 빈혈 환자의 간세포에서 예상되는 변화로 옳은 것은?",
+  c:["Ferritin 감소, transferrin receptor 증가","Ferritin 증가, transferrin receptor 감소","둘 다 증가","둘 다 감소","둘 다 변화 없음"],
+  a:0, ex:"철이 부족하면 저장(ferritin)을 줄이고 들여오기(TfR)를 늘린다. Ferritin = 번역 조절(IRE 5′), TfR = mRNA 안정성(IRE 3′).", ref:"5주차 p.43–46", fixed:true },
+
+/* ───────── 7주차 추가 ───────── */
+{ id:"w7-11", w:7, topic:"아미노산 분류", src:"2022 Q1 변형",
+  q:"아미노산 분류로 옳은 것은?",
+  c:["음전하 – Asp, Glu","양전하 – Lys, Asn","Nonpolar aliphatic – Phe, Leu","황 함유 – Cys, Sec","Polar uncharged – Asp, Ser"],
+  a:0, ex:"Asn은 polar uncharged, Phe는 aromatic, 황 함유는 Cys·Met(Sec은 셀레늄), Asp는 음전하.", ref:"7주차 p.8–13" },
+
+{ id:"w7-12", w:7, topic:"UV 흡수", src:"신작",
+  q:"280 nm 자외선 흡수로 단백질을 정량할 수 있게 해 주는 아미노산은?",
+  c:["Trp, Tyr","Gly, Ala","Lys, Arg","Asp, Glu","Ser, Thr"],
+  a:0, ex:"방향족 Trp·Tyr이 280 nm를 흡수한다. Tyr의 –OH는 인산화 자리이기도 하다.", ref:"7주차 p.9 · 01′01″" },
+
+{ id:"w7-13", w:7, topic:"pH 7.4의 곁사슬", src:"신작",
+  q:"생리적 pH(7.4)에서 곁사슬 상태에 대한 설명으로 옳지 않은 것은?",
+  c:["His은 대부분 중성이지만 쉽게 양성자를 주고받는다.",
+     "Cys은 대부분 –SH이고 일부가 thiolate(S⁻)이다.",
+     "Arg은 양전하를 띤다.",
+     "Lys·Arg의 양전하는 DNA·RNA 결합에 쓰인다.",
+     "Lys은 pKa가 낮아 pH 7.4에서 대부분 중성이다."],
+  a:4, ex:"Lys·Arg는 pKa가 높아 pH 7.4에서 양전하다. pH < pKa → protonated.", ref:"7주차 p.17–18 · 30′45″" },
+
+{ id:"w7-14", w:7, topic:"Met · SAM", src:"신작",
+  q:"번역 시작 아미노산이면서 메틸 공여체 SAM의 전구체인 아미노산은?",
+  c:["Met","Cys","Ser","Gln","Sec"],
+  a:0, ex:"Met = 번역 시작 · SAM 전구체. SAM은 PRMT 등 메틸화 효소의 메틸 공여체(3주차와 연결).", ref:"7주차 p.12 · 13′55″" },
+
+{ id:"w7-15", w:7, topic:"Polymorphism", src:"신작",
+  q:"1차 구조의 변이에 대한 설명으로 옳지 않은 것은?",
+  c:["비슷한 성질의 아미노산으로 바뀌는 conservative substitution은 영향이 작다.",
+     "Polymorphism은 allele 빈도가 1% 이상인 변이이다.",
+     "겸상적혈구는 β-globin의 Glu6Val 변이로 생긴다.",
+     "기능에 필수적인 부위는 종 사이에서 잘 보존된다(invariant).",
+     "Polymorphism은 정의상 항상 무해하다."],
+  a:4, ex:"Polymorphism은 빈도 기준일 뿐 무해하다는 뜻이 아니다. 겸상적혈구가 예.", ref:"7주차 p.21–22 · 41′24″" },
+
+{ id:"w7-16", w:7, topic:"Isoform · isozyme", src:"신작",
+  q:"Isozyme에 대한 설명으로 옳은 것은?",
+  c:["같은 반응을 촉매하지만 분자적 특성이 다른 효소들이다.",
+     "한 유전자에서 alternative splicing으로 생긴 형태만 가리킨다.",
+     "반응도 구조도 완전히 같은 효소이다.",
+     "번역 후 변형이 일어나지 않은 효소이다.",
+     "서로 다른 반응을 촉매하는 같은 구조의 효소이다."],
+  a:0, ex:"Isoform = 한 유전자에서 alternative splicing 등으로 생긴 다른 형태 / isozyme = 같은 반응, 다른 분자 특성.", ref:"7주차 p.22" },
+
+{ id:"w7-17", w:7, topic:"접힘의 힘", src:"옛 기출 [20] 변형",
+  q:"단백질 3차 구조를 유지하는 결합 중 유일한 공유결합은?",
+  c:["Disulfide 결합","수소결합","이온결합(salt bridge)","Van der Waals 힘","소수성 효과"],
+  a:0, ex:"Disulfide(Cys 2개 산화)가 가장 강하다. 접힘의 주 동력은 소수성 효과.", ref:"7주차 p.14, 28, 35" },
+
+{ id:"w7-18", w:7, topic:"β-sheet", src:"2022 Q4 변형",
+  q:"β-sheet에 대한 설명으로 옳지 않은 것은?",
+  c:["펴진 β-strand 사이에서 수소결합이 형성된다.",
+     "Parallel과 antiparallel 형태가 있다.",
+     "Antiparallel의 수소결합이 더 직선에 가깝다.",
+     "곁사슬은 sheet의 위아래로 번갈아 향한다.",
+     "수소결합은 곁사슬끼리 형성된다."],
+  a:4, ex:"2차 구조의 수소결합은 backbone(C=O ··· H–N) 사이에서 생긴다.", ref:"7주차 p.31" },
+
+{ id:"w7-19", w:7, topic:"산소 해리 곡선", src:"옛 기출 [19] 변형",
+  q:"Hemoglobin 산소 해리 곡선을 오른쪽으로 이동시키는 요인이 아닌 것은?",
+  c:["pH 증가","2,3-BPG 증가","CO₂ 증가","H⁺ 증가","고지대 적응"],
+  a:0, ex:"pH가 '감소'해야(H⁺↑) 오른쪽 이동(Bohr). 고지대·빈혈에서 2,3-BPG가 늘어 오른쪽으로 간다.", ref:"7주차 p.43–44" },
+
+{ id:"w7-20", w:7, topic:"Glycation · HbA1c", src:"신작",
+  q:"단백질 당화(glycation)에 대한 설명으로 옳지 않은 것은?",
+  c:["환원당과 단백질의 아미노기가 반응한다.",
+     "Amadori 재배열을 거쳐 안정한 ketoamine이 된다.",
+     "HbA1c는 이 과정으로 생긴 당화 혈색소이다.",
+     "더 진행되면 AGEs가 만들어진다.",
+     "처음 생기는 Schiff base는 되돌릴 수 없는 비가역 결합이다."],
+  a:4, ex:"Schiff base(imine)는 가역적이다. Amadori 산물(ketoamine)이 되어야 안정해진다.", ref:"7주차 p.51" }
+];
+
+</script>
+<script>
+(function(){
+const LS="mjk-biochem-v1";
+let store={};
+try{store=JSON.parse(localStorage.getItem(LS)||"{}")||{}}catch(e){store={}}
+store.last=store.last||{};store.flags=store.flags||{};
+function save(){try{localStorage.setItem(LS,JSON.stringify(store))}catch(e){}}
+
+const weekKeys=Object.keys(WEEKS).map(Number);
+let sel=new Set(weekKeys), mode="random", session=null;
+const $app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const N=["①","②","③","④","⑤"];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function weekStat(w){const qs=QUESTIONS.filter(q=>q.w===w);let ok=0,no=0;qs.forEach(q=>{if(store.last[q.id]===true)ok++;else if(store.last[q.id]===false)no++});return{n:qs.length,ok,no}}
+function pool(){
+  let qs=QUESTIONS.filter(q=>sel.has(q.w));
+  if(mode==="wrong")qs=qs.filter(q=>store.last[q.id]===false);
+  if(mode==="flag")qs=qs.filter(q=>store.flags[q.id]);
+  if(mode==="new")qs=qs.filter(q=>!(q.id in store.last));
+  return qs;
+}
+
+function home(){
+  session=null;
+  const p=pool();
+  const counts={wrong:QUESTIONS.filter(q=>sel.has(q.w)&&store.last[q.id]===false).length,
+    flag:QUESTIONS.filter(q=>sel.has(q.w)&&store.flags[q.id]).length,
+    new:QUESTIONS.filter(q=>sel.has(q.w)&&!(q.id in store.last)).length};
+  $app.innerHTML=`
+  <header class="brand"><div><div class="eyebrow">먼저 보는 작년 기출 · 생화학 중간</div><div class="logo">먼작기 <span>N제</span></div></div>
+  <div class="sub">기출 변형 + 신작 ${QUESTIONS.length}문항 · 정답은 슬라이드로 검수</div></header>
+  <section class="panel" aria-label="주차 고르기">
+    <div class="row" style="justify-content:space-between"><div class="eyebrow">주차 · 교수님</div>
+      <div class="row"><button class="ghost" id="all" style="padding:4px 10px">전체</button><button class="ghost" id="none" style="padding:4px 10px">해제</button></div></div>
+    <div class="weeks">${weekKeys.map(w=>{const s=weekStat(w);const W=WEEKS[w];
+      return `<button class="wk" data-w="${w}" aria-pressed="${sel.has(w)}"><span class="t">${w}주차 · ${esc(W.prof)}</span><span class="d">${esc(W.title)}</span>
+      <span class="bar"><i class="g" style="width:${s.ok/s.n*100}%"></i><i class="b" style="width:${s.no/s.n*100}%"></i></span>
+      <span class="meta">맞음 ${s.ok} · 틀림 ${s.no} · 안 푼 ${s.n-s.ok-s.no} / ${s.n}</span><span class="chk" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>`}).join("")}</div>
+  </section>
+  <section class="panel" aria-label="풀이 방식">
+    <div class="eyebrow">풀이 방식</div>
+    <div class="row">
+      <button class="seg" data-m="random" aria-pressed="${mode==="random"}">랜덤 섞기</button>
+      <button class="seg" data-m="order" aria-pressed="${mode==="order"}">주차 순서대로</button>
+      <button class="seg" data-m="new" aria-pressed="${mode==="new"}" ${counts.new?"":"disabled"}>안 푼 문제 ${counts.new}</button>
+      <button class="seg" data-m="wrong" aria-pressed="${mode==="wrong"}" ${counts.wrong?"":"disabled"}>틀린 문제만 ${counts.wrong}</button>
+      <button class="seg" data-m="flag" aria-pressed="${mode==="flag"}" ${counts.flag?"":"disabled"}>의심 표시 ${counts.flag}</button>
+    </div>
+    <div class="row" style="justify-content:space-between">
+      <span class="note">선지 순서는 풀 때마다 섞여요. 기록은 이 브라우저에만 저장돼요.</span>
+      <button class="primary" id="go" ${p.length?"":"disabled"}>${p.length}문항 풀기</button>
+    </div>
+  </section>
+  <div class="foot"><button class="linkbtn" id="replay">인트로 다시 보기</button></div>`;
+  document.getElementById("replay").onclick=()=>playIntro(true);
+  $app.querySelectorAll(".wk").forEach(b=>b.onclick=()=>{const w=+b.dataset.w;sel.has(w)?sel.delete(w):sel.add(w);fixMode();home()});
+  $app.querySelectorAll(".seg").forEach(b=>b.onclick=()=>{mode=b.dataset.m;home()});
+  document.getElementById("all").onclick=()=>{sel=new Set(weekKeys);home()};
+  document.getElementById("none").onclick=()=>{sel=new Set();home()};
+  document.getElementById("go").onclick=start;
+}
+function fixMode(){if(mode!=="random"&&mode!=="order"&&!pool().length)mode="random"}
+
+function start(){
+  let qs=pool();
+  qs=mode==="order"?qs.slice().sort((a,b)=>a.id.localeCompare(b.id)):shuffle(qs);
+  session={qs:qs.map(q=>{const idx=q.c.map((_,i)=>i);return{q,order:q.fixed?idx:shuffle(idx),pick:null}}),i:0};
+  render();window.scrollTo(0,0);
+}
+
+function render(){
+  const s=session,it=s.qs[s.i],q=it.q,done=it.pick!==null;
+  const dots=s.qs.map((x,k)=>`<i class="${k===s.i?"cur":x.pick===null?"":x.pick===x.q.a?"ok":"no"}"></i>`).join("");
+  const correctN=s.qs.filter(x=>x.pick!==null&&x.pick===x.q.a).length,answered=s.qs.filter(x=>x.pick!==null).length;
+  $app.innerHTML=`
+  <div class="strip"><div class="top"><button class="ghost" id="quit" style="padding:4px 10px">← 처음으로</button>
+    <span class="kbd">${s.i+1} / ${s.qs.length} · 맞음 ${correctN}/${answered}</span></div><div class="dots">${dots}</div></div>
+  <article class="panel card-in">
+    <div class="tags"><span class="tag">${q.w}주차 · ${esc(WEEKS[q.w].prof)}</span><span class="tag src">${esc(q.topic)}</span><span class="tag src">${esc(q.src)}</span></div>
+    <div class="stem">${esc(q.q)}</div>
+    <ol class="choices">${it.order.map((ci,k)=>{
+      let cls="",mark="";
+      if(done){if(ci===q.a){cls="correct";mark="정답"}else if(ci===it.pick){cls="wrong";mark="내 답"}else cls="dim"}
+      return `<li><button class="choice ${cls}" data-ci="${ci}" ${done?"disabled":""}><span class="n">${k+1}</span><span>${esc(q.c[ci])}</span><span class="mark">${mark}</span></button></li>`}).join("")}</ol>
+    ${done?`<div class="explain"><div class="verdict ${it.pick===q.a?"ok":"no"}">${it.pick===q.a?"맞았어요.":"정답은 "+N[it.order.indexOf(q.a)]+"번이에요."}</div>
+      <div>${esc(q.ex)}</div><div class="ref">근거 · ${esc(q.ref)}</div></div>`:""}
+    <div class="actions">
+      <button class="ghost flagbtn" id="flag" aria-pressed="${!!store.flags[q.id]}">${store.flags[q.id]?"의심 표시됨":"정답 의심 표시"}</button>
+      ${done?`<button class="primary" id="next">${s.i+1<s.qs.length?"다음 문제":"결과 보기"}</button>`:`<span class="kbd">숫자 키 1–5로 고르기</span>`}
+    </div>
+  </article>`;
+  document.getElementById("quit").onclick=home;
+  document.getElementById("flag").onclick=()=>{store.flags[q.id]?delete store.flags[q.id]:store.flags[q.id]=1;save();render()};
+  $app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>choose(+b.dataset.ci));
+  const nx=document.getElementById("next");if(nx){nx.onclick=next;nx.focus({preventScroll:true})}
+}
+function choose(ci){const it=session.qs[session.i];if(it.pick!==null)return;it.pick=ci;store.last[it.q.id]=(ci===it.q.a);save();render()}
+function next(){if(session.i+1<session.qs.length){session.i++;render();window.scrollTo(0,0)}else result()}
+
+function result(){
+  const s=session,ok=s.qs.filter(x=>x.pick===x.q.a),wrong=s.qs.filter(x=>x.pick!==x.q.a);
+  const byW={};s.qs.forEach(x=>{const w=x.q.w;byW[w]=byW[w]||{n:0,ok:0};byW[w].n++;if(x.pick===x.q.a)byW[w].ok++});
+  $app.innerHTML=`
+  <header class="brand"><div><div class="eyebrow">이번 세트 결과</div><div class="score">${ok.length}<small> / ${s.qs.length}</small></div></div>
+  <div class="row">${Object.keys(byW).map(w=>`<span class="tag src">${w}주차 ${byW[w].ok}/${byW[w].n}</span>`).join("")}</div></header>
+  ${wrong.length?`<section class="panel"><div class="eyebrow">틀린 문제 ${wrong.length}</div><ul class="wlist">${wrong.map(x=>`<li><span class="q">${esc(x.q.q.split("\n")[0])}</span><span class="a">정답: ${esc(x.q.c[x.q.a])}</span><span class="ref">${esc(x.q.ref)}</span></li>`).join("")}</ul></section>`:`<section class="panel"><div>전부 맞았어요. 다른 주차를 섞어 보세요.</div></section>`}
+  <div class="row" style="justify-content:flex-end">
+    ${wrong.length?`<button class="primary" id="retry">틀린 ${wrong.length}문항 다시</button>`:""}
+    <button class="ghost" id="back">처음으로</button></div>`;
+  document.getElementById("back").onclick=home;
+  const r=document.getElementById("retry");if(r)r.onclick=()=>{session={qs:shuffle(wrong).map(x=>({q:x.q,order:x.q.fixed?x.order:shuffle(x.order),pick:null})),i:0};render();window.scrollTo(0,0)};
+}
+
+document.addEventListener("keydown",e=>{
+  if(!session||e.metaKey||e.ctrlKey||e.altKey)return;
+  const it=session.qs[session.i];if(!it)return;
+  if(it.pick===null&&/^[1-5]$/.test(e.key)){const ci=it.order[+e.key-1];if(ci!==undefined)choose(ci)}
+  else if(it.pick!==null&&(e.key==="Enter"||e.key==="ArrowRight")&&document.getElementById("next")){e.preventDefault();next()}
+});
+
+const EX=[
+ {tag:"2025 Q5 · 박석인",pre:"DNA polymerase ε는 ",from:"leading",to:"lagging",post:" strand 합성의 주효소이다."},
+ {tag:"2025 Q22 · 김현경",pre:"Polyadenylation 신호서열은 mRNA ",from:"3′ UTR",to:"5′ UTR",post:"에 있다."},
+ {tag:"2025 Q16 · 박석인",pre:"TSG의 돌연변이는 보통 ",from:"열성",to:"우성",post:"으로 작용한다."}
+];
+const GLY="ACGTUαβγδεΔ′3567가나다라마바사↑↓";
+let introRun=0;
+function playIntro(force){
+  let reduce=false;try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+  const today=new Date().toISOString().slice(0,10);
+  if(!force){if(reduce||store.intro===today)return}
+  store.intro=today;save();
+  const run=++introRun;
+  const el=document.createElement("div");el.className="intro";el.setAttribute("role","presentation");
+  el.innerHTML=`<div class="intro-in"><div class="i-head"><span class="i-tag"></span><span class="i-state">기출 원문</span></div>
+   <p class="i-line"><span class="i-pre"></span><span class="i-slot"><span class="i-old"></span><span class="i-word"></span></span><span class="i-post"></span></p>
+   <div class="i-logo"><b>먼작기 <span>N제</span></b><small id="i-count">기출 변형 0문항</small></div></div>
+   <button class="i-skip" type="button">건너뛰기</button>`;
+  document.body.appendChild(el);
+  const $=s=>el.querySelector(s);
+  const end=()=>{if(run!==introRun)return;introRun++;el.classList.add("out");setTimeout(()=>el.remove(),460)};
+  $(".i-skip").onclick=end;el.addEventListener("click",e=>{if(e.target===el)end()});
+  const alive=()=>run===introRun;
+  const wait=ms=>new Promise((res,rej)=>setTimeout(()=>alive()?res():rej(0),ms));
+  const scramble=(node,from,to,ms)=>new Promise(res=>{
+    const t0=performance.now(),L=Math.max(from.length,to.length);
+    (function f(now){if(!alive())return res();const p=Math.min(1,(now-t0)/ms);let s="";
+      for(let i=0;i<L;i++){const fixAt=(i+1)/L;
+        if(p>=fixAt){s+=to[i]||""}else if(p<0.15&&from[i]){s+=from[i]}else{s+=i<(to.length+(1-p)*(L-to.length))?GLY[Math.floor(Math.random()*GLY.length)]:""}}
+      node.textContent=s;p<1?requestAnimationFrame(f):res()})(t0)});
+  (async()=>{try{
+    for(const ex of EX){
+      const line=$(".i-line"),slot=$(".i-slot"),st=$(".i-state");
+      $(".i-tag").textContent=ex.tag;$(".i-pre").textContent=ex.pre;$(".i-post").textContent=ex.post;
+      $(".i-word").textContent=ex.from;$(".i-old").textContent=ex.from;slot.className="i-slot";st.className="i-state";st.textContent="기출 원문";
+      line.classList.add("show");await wait(520);
+      slot.classList.add("scan");st.textContent="함정 자리 찾는 중";await wait(480);
+      slot.classList.add("swap");st.className="i-state on";st.textContent="AI 변형 중";
+      await scramble($(".i-word"),ex.from,ex.to,560);
+      slot.classList.add("done");st.className="i-state bad";st.textContent="→ 옳지 않은 선지";await wait(820);
+      line.classList.remove("show");await wait(300);
+    }
+    $(".i-head").style.opacity="0";$(".i-logo").classList.add("show");
+    const c=$("#i-count"),N=QUESTIONS.length,t0=performance.now();
+    await new Promise(res=>{(function f(now){if(!alive())return res();const p=Math.min(1,(now-t0)/700);c.textContent="기출 변형 "+Math.round(N*p*(2-p))+"문항";p<1?requestAnimationFrame(f):res()})(t0)});
+    await wait(700);end();
+  }catch(e){}})();
+}
+home();
+playIntro(false);
+})();
+</script>
+
+</body>
+</html>
