@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소리 시험</title>
+<style>
+:root{--bg:#0f1719;--card:#172226;--ink:#e3ecee;--m:#93a6ad;--a:#5cc3c3;--g:#6fd394;--r:#f08a7e;--f:#e8b25a}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,system-ui,sans-serif;padding:16px;line-height:1.5}
+h1{font-size:1.3rem;margin:0 0 4px}
+p{margin:0 0 12px;color:var(--m);font-size:.9rem}
+.v{background:var(--card);border-radius:14px;padding:12px;margin:0 0 10px}
+.v b{display:block}
+.v small{color:var(--m);display:block;margin:2px 0 8px;font-size:.82rem}
+button{font:inherit;border:0;border-radius:999px;padding:9px 16px;font-weight:700;background:var(--a);color:#0d1417}
+button:disabled{opacity:.4}
+.res{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;margin-top:8px;white-space:pre-wrap;color:var(--ink)}
+.ok{color:var(--g)}.no{color:var(--r)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.row button{background:transparent;border:1.5px solid #2a3b41;color:var(--ink);font-weight:500}
+.row button[aria-pressed="true"]{background:var(--f);color:#0d1417;border-color:var(--f)}
+#copy{margin-top:6px}
+</style>
+</head>
+<body>
+<h1>먼작기 소리 시험</h1>
+<p>시험마다 8초 동안 '띵(높음) 똑 똑 똑'이 두 번 나와요. <b>시험 하나 할 때마다 새로고침</b>하고 다음 시험을 눌러 주세요. 들린 대로 아래 단추를 고르고, 다 끝나면 '결과 복사'를 눌러 붙여 주세요.</p>
+<div id="list"></div>
+<button id="copy">결과 복사</button>
+<div class="res" id="all"></div>
+<script>
+(function(){
+const V=[
+ {k:"A",t:"Web Audio만",d:"소리 엔진만 써요. 무음 스위치를 켜 두면 안 들릴 수 있어요."},
+ {k:"B",t:"재생 모드 먼저 → Web Audio",d:"아이폰에 '재생' 모드라고 먼저 알려요."},
+ {k:"C",t:"지금 게임 방식",d:"소리 엔진을 만든 뒤 재생 모드 + 8000Hz 무음 반복. 지금 빌드와 같은 순서예요."},
+ {k:"D",t:"고친 안",d:"재생 모드 먼저 + 소리 엔진과 같은 Hz의 무음 반복 → 그다음 소리 엔진."}
+];
+const R={};
+const pnow=()=>performance.now()/1000;
+function silentWav(rate){
+  const n=Math.round(rate*0.5),buf=new ArrayBuffer(44+n*2),v=new DataView(buf),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+  w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVE");w(12,"fmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);
+  const a=document.createElement("audio");a.src=URL.createObjectURL(new Blob([buf],{type:"audio/wav"}));a.loop=true;a.setAttribute("playsinline","");return a;
+}
+function setSession(){try{if(navigator.audioSession){navigator.audioSession.type="playback";return navigator.audioSession.type}}catch(e){}return "없음"}
+function mkAC(){const C=window.AudioContext||window.webkitAudioContext;const a=new C();if(a.state!=="running")a.resume().catch(()=>{});return a}
+function tone(ac,at,f,dur,type,vol){const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f,at);g.gain.setValueAtTime(0.0001,at);g.gain.exponentialRampToValueAtTime(vol,at+0.006);g.gain.exponentialRampToValueAtTime(0.0001,at+dur);o.connect(g);g.connect(ac.destination);o.start(at);o.stop(at+dur+0.03)}
+function run(v,box,out,btns){
+  btns.forEach(b=>b.disabled=true);
+  let ac,el,sess="안 씀",info=[];
+  try{
+    if(v.k==="A"){ac=mkAC()}
+    if(v.k==="B"){sess=setSession();ac=mkAC()}
+    if(v.k==="C"){ac=mkAC();sess=setSession();el=silentWav(8000);el.play().catch(e=>info.push("무음재생실패"))}
+    if(v.k==="D"){sess=setSession();el=silentWav(48000);el.play().catch(e=>info.push("무음재생실패"));ac=mkAC()}
+  }catch(e){out.textContent="오류: "+e.message;return}
+  const t0=pnow(),c0=ac.currentTime,samples=[],states=new Set([ac.state]);
+  ac.onstatechange=()=>states.add(ac.state);
+  // 박: 학습 게임처럼 '지금 시각 + 남은 시간'으로 예약 (게임과 같은 계산)
+  let n=0,next=t0+0.3;
+  const sched=setInterval(()=>{
+    while(next<pnow()+0.12&&n<8){const at=ac.currentTime+Math.max(0,next-pnow());
+      if(n%4===0)tone(ac,at,1046.5,0.38,"sine",0.32);else tone(ac,at,523.25,0.11,"triangle",0.22);n++;next+=1}
+  },25);
+  const mon=setInterval(()=>{samples.push([pnow()-t0,ac.currentTime-c0,ac.state]);
+    out.textContent=`진행 ${(pnow()-t0).toFixed(1)}초 · 엔진 시계 ${(ac.currentTime-c0).toFixed(2)}초 · 상태 ${ac.state}`},250);
+  setTimeout(()=>{
+    clearInterval(sched);clearInterval(mon);
+    const real=pnow()-t0,clk=ac.currentTime-c0;
+    let maxGap=0;for(let i=1;i<samples.length;i++){const dr=samples[i][0]-samples[i-1][0],dc=samples[i][1]-samples[i-1][1];maxGap=Math.max(maxGap,dr-dc)}
+    const r={k:v.k,ua:navigator.userAgent.match(/(CriOS|FxiOS|Version)\/[\d.]+/)?.[0]||"",sr:ac.sampleRate,base:(ac.baseLatency||0).toFixed(3),out:(ac.outputLatency||0).toFixed(3),
+      ratio:(clk/real*100).toFixed(0)+"%",stall:maxGap.toFixed(2),states:[...states].join(">"),sess,info:info.join(",")};
+    R[v.k]=Object.assign(R[v.k]||{},r);
+    const bad=Math.abs(clk/real-1)>0.05||maxGap>0.3;
+    out.innerHTML=`<span class="${bad?"no":"ok"}">엔진 시계 ${r.ratio} (멈춘 최대 ${r.stall}초)</span>\n샘플레이트 ${r.sr} · 상태 ${r.states} · 재생 모드 ${sess}${r.info?" · "+r.info:""}`;
+    try{if(el)el.pause();ac.close()}catch(e){}
+    box.querySelector(".row").hidden=false;
+    btns.forEach(b=>b.disabled=false);
+    show();
+  },8600);
+}
+function show(){
+  document.getElementById("all").textContent=Object.values(R).map(r=>`${r.k}: 들림=${r.heard||"?"} 시계=${r.ratio||"-"} 멈춤=${r.stall||"-"} SR=${r.sr||"-"} 상태=${r.states||"-"} 모드=${r.sess||"-"} ${r.ua||""} ${r.info||""}`).join("\n");
+}
+const list=document.getElementById("list"),runBtns=[];
+V.forEach(v=>{
+  const d=document.createElement("div");d.className="v";
+  d.innerHTML=`<b>${v.k}. ${v.t}</b><small>${v.d}</small><button>시험 ${v.k}</button><div class="res"></div>
+   <div class="row" hidden><button data-h="정상">정상</button><button data-h="이상한소리">이상한 소리</button><button data-h="일부만">일부만 들림</button><button data-h="안들림">안 들림</button></div>`;
+  list.appendChild(d);
+  const b=d.querySelector("button"),out=d.querySelector(".res");runBtns.push(b);
+  b.onclick=()=>run(v,d,out,runBtns);
+  d.querySelectorAll(".row button").forEach(h=>h.onclick=()=>{d.querySelectorAll(".row button").forEach(x=>x.setAttribute("aria-pressed",x===h));R[v.k]=Object.assign(R[v.k]||{k:v.k},{heard:h.dataset.h});show()});
+});
+document.getElementById("copy").onclick=()=>{const t=document.getElementById("all").textContent||"(결과 없음)";
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("복사했어요"),()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();alert("복사했어요")})};
+})();
+</script>
+</body>
+</html>
